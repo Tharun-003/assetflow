@@ -1,0 +1,5 @@
+id,name,email,role,department
+1,Admin User,admin@assetflow.gov,Admin,Management
+2,John Doe,head@assetflow.gov,Department Head,IT
+3,Jane Smith,auditor@assetflow.gov,Auditor,Finance
+4,Public Viewer,public@assetflow.gov,Public,None

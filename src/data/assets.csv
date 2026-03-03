@@ -1,0 +1,21 @@
+id,name,category,department,status,purchaseDate,vendor,cost,serialNumber,description,qrCode
+AST-001,Dell XPS 15,Laptop,IT,Active,2023-01-15,Dell Tech,124500,DXPS15-0982,High performance laptop for development,qr-AST-001
+AST-002,Ergonomic Chair,Furniture,HR,Active,2022-11-20,OfficePlus,20750,EC-54321,Standard office chair,qr-AST-002
+AST-003,Projector 4K,Electronics,Management,In Repair,2021-08-05,Sony,99600,PRJ4K-1122,Conference room projector,qr-AST-003
+AST-004,Cisco Router,Networking,IT,Active,2023-05-10,Cisco Systems,282200,CRX-9988,Main networking router,qr-AST-004
+AST-005,Ford Transit Van,Vehicle,Logistics,Disposed,2015-02-14,Ford Motors,2905000,VIN88776655,Delivery van engine failure,qr-AST-005
+AST-006,MacBook Pro M2,Laptop,IT,Active,2023-11-01,Apple Store,182600,MBP-M2-1001,Lead developer workstation,qr-AST-006
+AST-007,Standing Desk,Furniture,HR,Active,2023-03-12,IKEA,37350,SD-99812,Adjustable standing desk,qr-AST-007
+AST-008,Cisco Switch 48-port,Networking,IT,Active,2022-06-25,Cisco Systems,174300,CSW-48P-01,Core distribution switch,qr-AST-008
+AST-009,Herman Miller Chair,Furniture,Management,Active,2024-01-10,OfficePlus,91300,HM-AERON-1,Executive seating,qr-AST-009
+AST-010,Sony A7III Camera,Electronics,HR,In Repair,2021-12-05,Sony,165917,SNY-A7-09,Corporate media camera,qr-AST-010
+AST-011,Electric Forklift,Vehicle,Logistics,Active,2020-04-18,Toyota Industrial,2075000,TYT-FL-445,Warehouse operations,qr-AST-011
+AST-012,Server Rack 42U,Infrastructure,IT,Active,2022-09-30,APC,99600,APC-42U-001,Data center enclosure,qr-AST-012
+AST-013,Conference Table,Furniture,Management,Active,2019-11-20,Steelcase,290500,STC-CT-12,Boardroom table 12-seater,qr-AST-013
+AST-014,HP LaserJet Pro,Electronics,Facilities,Disposed,2017-08-14,HP,41500,HP-LJ-999,Department printer,qr-AST-014
+AST-015,Security Camera PTZ,Security,Facilities,Active,2023-05-22,Axis,70550,AX-PTZ-01,Main entrance surveillance,qr-AST-015
+AST-016,Surface Pro 9,Laptop,Management,Active,2024-02-15,Microsoft,132800,MS-SP9-01,Executive travel device,qr-AST-016
+AST-017,Industrial Shredder,Electronics,Facilities,Active,2021-07-10,Fellowes,99600,FEL-SH-05,Document destruction,qr-AST-017
+AST-018,Delivery Drone,Vehicle,Logistics,In Repair,2023-10-05,DJI,290500,DJI-ENT-02,Experimental logistics payload,qr-AST-018
+AST-019,Uninterruptible Power Supply,Infrastructure,IT,Active,2023-01-20,APC,373500,APC-UPS-8K,Server room battery backup,qr-AST-019
+AST-020,Auditorium Projector,Electronics,Facilities,Active,2022-03-30,Epson,456500,EPS-AUD-1,Main hall projection system,qr-AST-020
