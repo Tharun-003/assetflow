@@ -7,7 +7,7 @@ import { users } from '../data/mockData';
 function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [role, setRole] = useState('Admin');
+    const [role, setRole] = useState('chairman');
     const [error, setError] = useState('');
 
     const { login } = useAuth();
@@ -33,7 +33,12 @@ function Login() {
     return (
         <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8 font-sans">
             <div className="sm:mx-auto sm:w-full sm:max-w-md text-center">
-                <h2 className="text-4xl font-extrabold text-primary italic tracking-wider mb-2">AssetFlow</h2>
+                <div className="flex justify-center mb-4">
+                    <div className="p-2">
+                        <img src="/logo.png" alt="CIT Logo" className="h-20 object-contain" />
+                    </div>
+                </div>
+                <h2 className="text-3xl font-black text-primary tracking-tight mb-2">AssetFlow</h2>
                 <p className="mt-2 text-sm text-secondaryText">AI-Powered Institutional Asset Management</p>
             </div>
 
@@ -48,10 +53,10 @@ function Login() {
                                     onChange={(e) => setRole(e.target.value)}
                                     className="appearance-none block w-full px-3 py-2 border border-borderContent rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-accent focus:border-accent sm:text-sm"
                                 >
-                                    <option value="Admin">Admin</option>
-                                    <option value="Department Head">Department Head</option>
-                                    <option value="Auditor">Auditor</option>
-                                    <option value="Public">Public</option>
+                                    <option value="chairman">chairman</option>
+                                    <option value="principle">principle</option>
+                                    <option value="faculty">faculty</option>
+                                    <option value="HOD">HOD</option>
                                 </select>
                             </div>
                         </div>
@@ -91,16 +96,6 @@ function Login() {
                             >
                                 <LogIn className="mr-2 h-5 w-5" />
                                 Sign in
-                            </button>
-                        </div>
-
-                        <div className="mt-4 text-center">
-                            <button
-                                type="button"
-                                onClick={() => navigate('/public')}
-                                className="text-sm text-primary hover:text-blue-800 font-medium"
-                            >
-                                Go to Public Portal
                             </button>
                         </div>
                     </form>

@@ -1,15 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useData } from '../context/DataContext';
-import { QrCode, ScanLine, Camera, Activity, FileText, XCircle } from 'lucide-react';
+import { QrCode, ScanLine, Camera, Activity, FileText, XCircle, Upload } from 'lucide-react';
 import { Scanner } from '@yudiel/react-qr-scanner';
+import jsQR from 'jsqr';
 
 function QrScanner() {
     const { assets, auditLogs } = useData();
     const [isScanning, setIsScanning] = useState(false);
     const [scannedAsset, setScannedAsset] = useState(null);
     const [history, setHistory] = useState([]);
-
     const [errorMsg, setErrorMsg] = useState('');
+    const fileInputRef = useRef(null);
 
     const handleScan = (detectedCodes) => {
         if (detectedCodes && detectedCodes.length > 0) {
@@ -29,6 +30,36 @@ function QrScanner() {
                 setScannedAsset(null);
             }
         }
+    };
+
+    const handleImageUpload = (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            const img = new Image();
+            img.onload = () => {
+                const canvas = document.createElement("canvas");
+                canvas.width = img.width;
+                canvas.height = img.height;
+                const ctx = canvas.getContext("2d");
+                ctx.drawImage(img, 0, 0, img.width, img.height);
+                const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                const code = jsQR(imageData.data, imageData.width, imageData.height);
+
+                if (code) {
+                    handleScan([{ rawValue: code.data }]);
+                } else {
+                    setErrorMsg("No QR code found in the uploaded image.");
+                    setScannedAsset(null);
+                }
+            };
+            img.src = event.target.result;
+        };
+        reader.readAsDataURL(file);
+        // Reset file input
+        if (fileInputRef.current) fileInputRef.current.value = '';
     };
 
     const handleError = (error) => {
@@ -84,12 +115,28 @@ function QrScanner() {
                             <p className="text-white font-medium mb-6 text-lg tracking-wide">
                                 Institutional QR Scanner
                             </p>
-                            <button
-                                onClick={() => setIsScanning(true)}
-                                className="px-8 py-3 bg-primary text-white rounded-lg font-semibold tracking-wide hover:bg-blue-800 transition shadow-lg flex items-center mx-auto"
-                            >
-                                <ScanLine size={20} className="mr-3" /> Enable Live Camera
-                            </button>
+                            <div className="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-4">
+                                <button
+                                    onClick={() => setIsScanning(true)}
+                                    className="px-8 py-3 bg-primary text-white rounded-lg font-semibold tracking-wide hover:bg-blue-800 transition shadow-lg flex items-center"
+                                >
+                                    <ScanLine size={20} className="mr-3" /> Enable Live Camera
+                                </button>
+
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    className="hidden"
+                                    ref={fileInputRef}
+                                    onChange={handleImageUpload}
+                                />
+                                <button
+                                    onClick={() => fileInputRef.current?.click()}
+                                    className="px-8 py-3 bg-gray-800 text-white rounded-lg font-semibold tracking-wide hover:bg-gray-700 transition shadow-lg flex items-center border border-gray-700 hover:border-gray-500"
+                                >
+                                    <Upload size={20} className="mr-3" /> Upload QR Image
+                                </button>
+                            </div>
                         </div>
                     )}
                 </div>

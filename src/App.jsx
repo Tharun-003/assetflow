@@ -11,8 +11,11 @@ import Procurement from './pages/Procurement';
 import Approvals from './pages/Approvals';
 import AuditLog from './pages/AuditLog';
 import QrScanner from './pages/QrScanner';
-import PublicPortal from './pages/PublicPortal';
+
+import VerificationWorkbench from './pages/VerificationWorkbench';
 import Reports from './pages/Reports';
+import DefectDetection from './pages/DefectDetection';
+import SmartImport from './pages/SmartImport';
 
 function App() {
     return (
@@ -21,7 +24,6 @@ function App() {
                 <BrowserRouter>
                     <Routes>
                         <Route path="/login" element={<Login />} />
-                        <Route path="/public" element={<PublicPortal />} />
 
                         <Route path="/" element={<MainLayout />}>
                             <Route index element={<Navigate to="/dashboard" replace />} />
@@ -29,9 +31,12 @@ function App() {
                             <Route path="assets" element={<Assets />} />
                             <Route path="procurement" element={<Procurement />} />
                             <Route path="approvals" element={<Approvals />} />
+                            <Route path="verification" element={<VerificationWorkbench />} />
                             <Route path="audit" element={<AuditLog />} />
                             <Route path="scanner" element={<QrScanner />} />
                             <Route path="reports" element={<Reports />} />
+                            <Route path="defect-detection" element={<DefectDetection />} />
+                            <Route path="smart-import" element={<SmartImport />} />
                         </Route>
 
                         <Route path="*" element={<Navigate to="/login" replace />} />

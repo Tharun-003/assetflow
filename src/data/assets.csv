@@ -1,21 +1,136 @@
 id,name,category,department,status,purchaseDate,vendor,cost,serialNumber,description,qrCode
-AST-001,Dell XPS 15,Laptop,IT,Active,2023-01-15,Dell Tech,124500,DXPS15-0982,High performance laptop for development,qr-AST-001
-AST-002,Ergonomic Chair,Furniture,HR,Active,2022-11-20,OfficePlus,20750,EC-54321,Standard office chair,qr-AST-002
-AST-003,Projector 4K,Electronics,Management,In Repair,2021-08-05,Sony,99600,PRJ4K-1122,Conference room projector,qr-AST-003
-AST-004,Cisco Router,Networking,IT,Active,2023-05-10,Cisco Systems,282200,CRX-9988,Main networking router,qr-AST-004
-AST-005,Ford Transit Van,Vehicle,Logistics,Disposed,2015-02-14,Ford Motors,2905000,VIN88776655,Delivery van engine failure,qr-AST-005
-AST-006,MacBook Pro M2,Laptop,IT,Active,2023-11-01,Apple Store,182600,MBP-M2-1001,Lead developer workstation,qr-AST-006
-AST-007,Standing Desk,Furniture,HR,Active,2023-03-12,IKEA,37350,SD-99812,Adjustable standing desk,qr-AST-007
-AST-008,Cisco Switch 48-port,Networking,IT,Active,2022-06-25,Cisco Systems,174300,CSW-48P-01,Core distribution switch,qr-AST-008
-AST-009,Herman Miller Chair,Furniture,Management,Active,2024-01-10,OfficePlus,91300,HM-AERON-1,Executive seating,qr-AST-009
-AST-010,Sony A7III Camera,Electronics,HR,In Repair,2021-12-05,Sony,165917,SNY-A7-09,Corporate media camera,qr-AST-010
-AST-011,Electric Forklift,Vehicle,Logistics,Active,2020-04-18,Toyota Industrial,2075000,TYT-FL-445,Warehouse operations,qr-AST-011
-AST-012,Server Rack 42U,Infrastructure,IT,Active,2022-09-30,APC,99600,APC-42U-001,Data center enclosure,qr-AST-012
-AST-013,Conference Table,Furniture,Management,Active,2019-11-20,Steelcase,290500,STC-CT-12,Boardroom table 12-seater,qr-AST-013
-AST-014,HP LaserJet Pro,Electronics,Facilities,Disposed,2017-08-14,HP,41500,HP-LJ-999,Department printer,qr-AST-014
-AST-015,Security Camera PTZ,Security,Facilities,Active,2023-05-22,Axis,70550,AX-PTZ-01,Main entrance surveillance,qr-AST-015
-AST-016,Surface Pro 9,Laptop,Management,Active,2024-02-15,Microsoft,132800,MS-SP9-01,Executive travel device,qr-AST-016
-AST-017,Industrial Shredder,Electronics,Facilities,Active,2021-07-10,Fellowes,99600,FEL-SH-05,Document destruction,qr-AST-017
-AST-018,Delivery Drone,Vehicle,Logistics,In Repair,2023-10-05,DJI,290500,DJI-ENT-02,Experimental logistics payload,qr-AST-018
-AST-019,Uninterruptible Power Supply,Infrastructure,IT,Active,2023-01-20,APC,373500,APC-UPS-8K,Server room battery backup,qr-AST-019
-AST-020,Auditorium Projector,Electronics,Facilities,Active,2022-03-30,Epson,456500,EPS-AUD-1,Main hall projection system,qr-AST-020
+AST-0001,Oscilloscope,Academic,CSBS,Active,2020-12-03,Furniture Direct,59230,SN-NKVGDQ,Active Oscilloscope used by CSBS,qr-AST-0001
+AST-0002,Whiteboard,Academic,CSE,In Repair,2019-08-08,EduTech Global,68701,SN-EWM221,In Repair Whiteboard used by CSE,qr-AST-0002
+AST-0003,Oscilloscope,Academic,EEE,In Repair,2019-03-26,Furniture Direct,27925,SN-MF193B,In Repair Oscilloscope used by EEE,qr-AST-0003
+AST-0004,Student Desk,Academic,COE,Active,2020-02-09,TCS Supplier,26279,SN-6MCDVM,Active Student Desk used by COE,qr-AST-0004
+AST-0005,Oscilloscope,Academic,Civil,Disposed,2019-12-06,Cloud Services inc.,59426,SN-RGMRYG,Disposed Oscilloscope used by Civil,qr-AST-0005
+AST-0006,Drawing Board,Academic,BME,In Repair,2020-10-12,Hardware Store,25312,SN-J9JWRG,In Repair Drawing Board used by BME,qr-AST-0006
+AST-0007,Student Desk,Academic,EEE,Disposed,2023-06-19,Campus Solutions,34575,SN-AWLY0K,Disposed Student Desk used by EEE,qr-AST-0007
+AST-0008,Drawing Board,Academic,CSE,Disposed,2022-08-08,EduTech Global,88153,SN-0SNDRR,Disposed Drawing Board used by CSE,qr-AST-0008
+AST-0009,Teacher Desk,Academic,EEE,In Repair,2022-09-16,Furniture Direct,20423,SN-VGH9DS,In Repair Teacher Desk used by EEE,qr-AST-0009
+AST-0010,Oscilloscope,Academic,Cybersecurity,In Repair,2023-12-10,Cloud Services inc.,21152,SN-BSJ7KS,In Repair Oscilloscope used by Cybersecurity,qr-AST-0010
+AST-0011,Whiteboard,Academic,AI&DS,In Repair,2021-07-04,Hardware Store,3525,SN-HCXUIR,In Repair Whiteboard used by AI&DS,qr-AST-0011
+AST-0012,Printer,IT Infrastructure,AIML,Disposed,2020-04-05,Cloud Services inc.,56873,SN-AYL10Z,Disposed Printer used by AIML,qr-AST-0012
+AST-0013,Printer,IT Infrastructure,ACCOUNTS,Active,2023-10-06,TCS Supplier,45412,SN-V6ELDU,Active Printer used by ACCOUNTS,qr-AST-0013
+AST-0014,Printer,IT Infrastructure,AIML,In Repair,2020-11-28,Hardware Store,21802,SN-5L19BH,In Repair Printer used by AIML,qr-AST-0014
+AST-0015,Workstation Computer,IT Infrastructure,IT,Disposed,2021-07-17,Campus Solutions,11393,SN-TVG30T,Disposed Workstation Computer used by IT,qr-AST-0015
+AST-0016,Printer,IT Infrastructure,Cybersecurity,In Repair,2020-10-04,Hardware Store,86168,SN-PQCHPP,In Repair Printer used by Cybersecurity,qr-AST-0016
+AST-0017,Biometric Device,IT Infrastructure,Mech,Disposed,2021-04-06,TCS Supplier,94205,SN-1O3T7M,Disposed Biometric Device used by Mech,qr-AST-0017
+AST-0018,Desktop Computer,IT Infrastructure,IT,Active,2019-01-08,Local Merchants API,46143,SN-E4FD0K,Active Desktop Computer used by IT,qr-AST-0018
+AST-0019,Biometric Device,IT Infrastructure,AI&DS,Disposed,2019-07-28,Furniture Direct,41019,SN-2IGRQV,Disposed Biometric Device used by AI&DS,qr-AST-0019
+AST-0020,Wi-Fi Access Point,IT Infrastructure,Civil,In Repair,2023-08-20,TCS Supplier,19672,SN-6XWCHO,In Repair Wi-Fi Access Point used by Civil,qr-AST-0020
+AST-0021,Network Switch,IT Infrastructure,ECE,Active,2020-03-13,Cloud Services inc.,44063,SN-XU1M1C,Active Network Switch used by ECE,qr-AST-0021
+AST-0022,Network Switch,IT Infrastructure,AIML,Disposed,2019-05-07,Hardware Store,38353,SN-E9G7TC,Disposed Network Switch used by AIML,qr-AST-0022
+AST-0023,Scanner,IT Infrastructure,EEE,Active,2019-04-04,Cloud Services inc.,69730,SN-YDI220,Active Scanner used by EEE,qr-AST-0023
+AST-0024,Book Trolley,Library,ECE,Active,2023-06-10,Local Merchants API,57649,SN-2M4MJD,Active Book Trolley used by ECE,qr-AST-0024
+AST-0025,Library Book Collection,Library,CSE,In Repair,2018-07-20,Campus Solutions,57677,SN-K59X4B,In Repair Library Book Collection used by CSE,qr-AST-0025
+AST-0026,Reading Table,Library,IT,Active,2018-03-13,Local Merchants API,58217,SN-0OAMU9,Active Reading Table used by IT,qr-AST-0026
+AST-0027,Journals,Library,ACCOUNTS,Active,2023-04-10,Furniture Direct,36295,SN-0BO1SR,Active Journals used by ACCOUNTS,qr-AST-0027
+AST-0028,Reading Table,Library,IT,Active,2019-08-27,Furniture Direct,41966,SN-KHQFE1,Active Reading Table used by IT,qr-AST-0028
+AST-0029,Book Trolley,Library,Civil,In Repair,2023-01-07,Furniture Direct,59836,SN-RV568Z,In Repair Book Trolley used by Civil,qr-AST-0029
+AST-0030,Reading Chair,Library,Cybersecurity,Disposed,2020-01-02,Campus Solutions,15630,SN-9WZMCT,Disposed Reading Chair used by Cybersecurity,qr-AST-0030
+AST-0031,Library Computer,Library,Mech,Active,2020-07-06,Furniture Direct,69385,SN-XRNDVQ,Active Library Computer used by Mech,qr-AST-0031
+AST-0032,Barcode Scanner,Library,Mech,Active,2020-04-20,Cloud Services inc.,29051,SN-0KQWRW,Active Barcode Scanner used by Mech,qr-AST-0032
+AST-0033,Reading Chair,Library,Mech,In Repair,2021-01-11,Cloud Services inc.,38961,SN-PVHSQ0,In Repair Reading Chair used by Mech,qr-AST-0033
+AST-0034,Reading Chair,Library,COE,In Repair,2023-04-20,Furniture Direct,85142,SN-SPPODT,In Repair Reading Chair used by COE,qr-AST-0034
+AST-0035,Library Computer,Library,CSE,In Repair,2021-05-07,EduTech Global,23364,SN-LO9FDN,In Repair Library Computer used by CSE,qr-AST-0035
+AST-0036,Exhaust Fan,Hostel,AIML,In Repair,2020-04-01,Furniture Direct,41335,SN-ANMMBP,In Repair Exhaust Fan used by AIML,qr-AST-0036
+AST-0037,Ironing Board,Hostel,AIML,Disposed,2019-08-05,Campus Solutions,26741,SN-5QS8E6,Disposed Ironing Board used by AIML,qr-AST-0037
+AST-0038,Ironing Board,Hostel,COE,Disposed,2022-06-12,TCS Supplier,56491,SN-JEE7HG,Disposed Ironing Board used by COE,qr-AST-0038
+AST-0039,Bunk Bed,Hostel,CSE,In Repair,2019-04-05,Furniture Direct,19984,SN-QD33T0,In Repair Bunk Bed used by CSE,qr-AST-0039
+AST-0040,Single Bed,Hostel,CSE,Disposed,2021-04-09,Furniture Direct,91761,SN-G6A2MS,Disposed Single Bed used by CSE,qr-AST-0040
+AST-0041,Ceiling Fan,Hostel,ECE,Active,2019-11-09,Local Merchants API,84539,SN-OT37B7,Active Ceiling Fan used by ECE,qr-AST-0041
+AST-0042,Ceiling Fan,Hostel,CSBS,Disposed,2023-10-22,EduTech Global,72715,SN-7A2VAY,Disposed Ceiling Fan used by CSBS,qr-AST-0042
+AST-0043,Bunk Bed,Hostel,BME,Active,2022-08-21,TCS Supplier,5144,SN-OT4Z27,Active Bunk Bed used by BME,qr-AST-0043
+AST-0044,Laundry Machine,Hostel,ECE,Disposed,2021-03-04,Hardware Store,71465,SN-MJQ2Z5,Disposed Laundry Machine used by ECE,qr-AST-0044
+AST-0045,Bunk Bed,Hostel,CSBS,Active,2023-03-22,Hardware Store,35823,SN-M9R6VR,Active Bunk Bed used by CSBS,qr-AST-0045
+AST-0046,Bunk Bed,Hostel,COE,In Repair,2020-05-09,Local Merchants API,19857,SN-0GP40V,In Repair Bunk Bed used by COE,qr-AST-0046
+AST-0047,Study Table,Hostel,BME,In Repair,2019-01-26,Cloud Services inc.,48304,SN-HBVQNE,In Repair Study Table used by BME,qr-AST-0047
+AST-0048,Deep Freezer,Food Facility,Cybersecurity,In Repair,2023-06-11,Local Merchants API,70286,SN-GFTVOS,In Repair Deep Freezer used by Cybersecurity,qr-AST-0048
+AST-0049,Cooking Stove,Food Facility,Cybersecurity,In Repair,2018-08-13,Furniture Direct,46651,SN-I42FYY,In Repair Cooking Stove used by Cybersecurity,qr-AST-0049
+AST-0050,Deep Freezer,Food Facility,Civil,Active,2022-03-15,EduTech Global,99489,SN-7TFB8S,Active Deep Freezer used by Civil,qr-AST-0050
+AST-0051,Deep Freezer,Food Facility,CSE,In Repair,2020-03-05,TCS Supplier,82476,SN-FXKTJV,In Repair Deep Freezer used by CSE,qr-AST-0051
+AST-0052,Food Warmer,Food Facility,BME,In Repair,2019-11-26,Campus Solutions,33441,SN-BE31ZJ,In Repair Food Warmer used by BME,qr-AST-0052
+AST-0053,Dining Table,Food Facility,BME,Disposed,2018-01-06,TCS Supplier,28659,SN-A17G6Q,Disposed Dining Table used by BME,qr-AST-0053
+AST-0054,Deep Freezer,Food Facility,Cybersecurity,Active,2021-05-17,Local Merchants API,79308,SN-F2ZX82,Active Deep Freezer used by Cybersecurity,qr-AST-0054
+AST-0055,Cooking Stove,Food Facility,Cybersecurity,Active,2019-08-20,Furniture Direct,66798,SN-S0ZL6K,Active Cooking Stove used by Cybersecurity,qr-AST-0055
+AST-0056,Refrigerator,Food Facility,ACCOUNTS,Active,2022-03-10,Local Merchants API,19583,SN-SVP6OW,Active Refrigerator used by ACCOUNTS,qr-AST-0056
+AST-0057,Cooking Stove,Food Facility,EEE,Disposed,2023-03-24,Local Merchants API,44739,SN-XV5K7I,Disposed Cooking Stove used by EEE,qr-AST-0057
+AST-0058,Bus CCTV Camera,Transport,AI&DS,Disposed,2022-05-08,Hardware Store,18363,SN-THE7ZR,Disposed Bus CCTV Camera used by AI&DS,qr-AST-0058
+AST-0059,Staff Van,Transport,CSBS,Active,2020-10-15,EduTech Global,84004,SN-53HQW3,Active Staff Van used by CSBS,qr-AST-0059
+AST-0060,Ambulance,Transport,AI&DS,In Repair,2019-02-07,Local Merchants API,12799,SN-IUWX4C,In Repair Ambulance used by AI&DS,qr-AST-0060
+AST-0061,Mini Bus,Transport,CSBS,Disposed,2018-04-01,Cloud Services inc.,44107,SN-H8XHJY,Disposed Mini Bus used by CSBS,qr-AST-0061
+AST-0062,Electric Campus Vehicle,Transport,IT,Active,2021-06-06,TCS Supplier,80380,SN-WDW0N7,Active Electric Campus Vehicle used by IT,qr-AST-0062
+AST-0063,Bus CCTV Camera,Transport,Civil,Active,2023-03-09,Hardware Store,100927,SN-U90NB0,Active Bus CCTV Camera used by Civil,qr-AST-0063
+AST-0064,Electric Campus Vehicle,Transport,AIML,In Repair,2023-03-10,EduTech Global,28530,SN-BXKWVH,In Repair Electric Campus Vehicle used by AIML,qr-AST-0064
+AST-0065,Electric Campus Vehicle,Transport,COE,Active,2021-04-13,Furniture Direct,83310,SN-A1E5PU,Active Electric Campus Vehicle used by COE,qr-AST-0065
+AST-0066,Staff Van,Transport,ECE,Active,2022-08-06,Furniture Direct,74620,SN-BG4KTL,Active Staff Van used by ECE,qr-AST-0066
+AST-0067,Mini Bus,Transport,AI&DS,Active,2023-08-28,Campus Solutions,25705,SN-FH4OH8,Active Mini Bus used by AI&DS,qr-AST-0067
+AST-0068,Bus CCTV Camera,Transport,EEE,Active,2022-11-14,TCS Supplier,50592,SN-76ZWFQ,Active Bus CCTV Camera used by EEE,qr-AST-0068
+AST-0069,Mini Bus,Transport,AIML,In Repair,2023-07-25,Hardware Store,86234,SN-D5VXUQ,In Repair Mini Bus used by AIML,qr-AST-0069
+AST-0070,Electric Campus Vehicle,Transport,AIML,In Repair,2021-01-15,Campus Solutions,73886,SN-SPZ2IP,In Repair Electric Campus Vehicle used by AIML,qr-AST-0070
+AST-0071,Mini Bus,Transport,BME,Disposed,2019-03-25,TCS Supplier,29798,SN-BC1QH0,Disposed Mini Bus used by BME,qr-AST-0071
+AST-0072,Mini Bus,Transport,AIML,In Repair,2021-10-08,Local Merchants API,46506,SN-U24WP4,In Repair Mini Bus used by AIML,qr-AST-0072
+AST-0073,ECG Machine,Medical,IT,In Repair,2021-04-14,Campus Solutions,80840,SN-J47P32,In Repair ECG Machine used by IT,qr-AST-0073
+AST-0074,Oxygen Cylinder,Medical,IT,Active,2022-10-07,Campus Solutions,67204,SN-LXF6PD,Active Oxygen Cylinder used by IT,qr-AST-0074
+AST-0075,Blood Pressure Monitor,Medical,IT,In Repair,2021-02-21,TCS Supplier,89108,SN-KOYW0S,In Repair Blood Pressure Monitor used by IT,qr-AST-0075
+AST-0076,Wheelchair,Medical,IT,In Repair,2019-11-15,Local Merchants API,61448,SN-HDBJ7K,In Repair Wheelchair used by IT,qr-AST-0076
+AST-0077,ECG Machine,Medical,CSBS,Active,2023-12-07,EduTech Global,49735,SN-4W8E70,Active ECG Machine used by CSBS,qr-AST-0077
+AST-0078,Oxygen Cylinder,Medical,IT,Active,2021-10-11,Furniture Direct,43503,SN-XJAD7T,Active Oxygen Cylinder used by IT,qr-AST-0078
+AST-0079,Wheelchair,Medical,EEE,Active,2018-05-06,EduTech Global,23853,SN-0JXH9D,Active Wheelchair used by EEE,qr-AST-0079
+AST-0080,First Aid Kit,Medical,Mech,Active,2018-04-23,Furniture Direct,21467,SN-RP81H0,Active First Aid Kit used by Mech,qr-AST-0080
+AST-0081,Wheelchair,Medical,Cybersecurity,In Repair,2020-04-16,TCS Supplier,99017,SN-59SQE2,In Repair Wheelchair used by Cybersecurity,qr-AST-0081
+AST-0082,First Aid Kit,Medical,CSBS,In Repair,2023-05-21,Local Merchants API,27712,SN-8QX6Z8,In Repair First Aid Kit used by CSBS,qr-AST-0082
+AST-0083,Stretcher,Medical,CSE,In Repair,2019-09-18,Cloud Services inc.,78328,SN-I7B4PU,In Repair Stretcher used by CSE,qr-AST-0083
+AST-0084,ECG Machine,Medical,AIML,Active,2018-01-06,EduTech Global,81437,SN-3NUZEG,Active ECG Machine used by AIML,qr-AST-0084
+AST-0085,Football,Sports,BME,Active,2021-06-13,Local Merchants API,72601,SN-8EHIP0,Active Football used by BME,qr-AST-0085
+AST-0086,Table Tennis Table,Sports,CSE,Disposed,2018-08-10,EduTech Global,7324,SN-T5TR7U,Disposed Table Tennis Table used by CSE,qr-AST-0086
+AST-0087,Cricket Kit,Sports,COE,In Repair,2022-11-11,Local Merchants API,1121,SN-WKKVR1,In Repair Cricket Kit used by COE,qr-AST-0087
+AST-0088,Football,Sports,BME,In Repair,2020-11-21,Cloud Services inc.,89969,SN-7NMWKN,In Repair Football used by BME,qr-AST-0088
+AST-0089,Football,Sports,IT,In Repair,2021-01-14,TCS Supplier,84938,SN-YO05VD,In Repair Football used by IT,qr-AST-0089
+AST-0090,Cricket Kit,Sports,CSE,In Repair,2021-11-03,TCS Supplier,38553,SN-4UBXI2,In Repair Cricket Kit used by CSE,qr-AST-0090
+AST-0091,Badminton Racket,Sports,AIML,In Repair,2021-07-12,EduTech Global,7571,SN-NCVRK7,In Repair Badminton Racket used by AIML,qr-AST-0091
+AST-0092,Cricket Kit,Sports,COE,Disposed,2019-12-24,TCS Supplier,26969,SN-N5PHTY,Disposed Cricket Kit used by COE,qr-AST-0092
+AST-0093,Basketball,Sports,IT,Disposed,2023-02-05,EduTech Global,69443,SN-DSBK5L,Disposed Basketball used by IT,qr-AST-0093
+AST-0094,Volleyball,Sports,EEE,Active,2021-02-16,EduTech Global,69184,SN-CLO87K,Active Volleyball used by EEE,qr-AST-0094
+AST-0095,Cricket Kit,Sports,CSBS,Active,2018-08-15,Local Merchants API,47532,SN-FJQ27A,Active Cricket Kit used by CSBS,qr-AST-0095
+AST-0096,Volleyball,Sports,Mech,Active,2019-12-05,Furniture Direct,61138,SN-9Y0652,Active Volleyball used by Mech,qr-AST-0096
+AST-0097,Gym Treadmill,Sports,ECE,Disposed,2022-08-03,Local Merchants API,25147,SN-8PH5O1,Disposed Gym Treadmill used by ECE,qr-AST-0097
+AST-0098,Gym Treadmill,Sports,AIML,In Repair,2022-05-25,Local Merchants API,32335,SN-MYY6JD,In Repair Gym Treadmill used by AIML,qr-AST-0098
+AST-0099,Volleyball,Sports,Mech,In Repair,2023-11-02,TCS Supplier,65345,SN-20L2U2,In Repair Volleyball used by Mech,qr-AST-0099
+AST-0100,Badminton Racket,Sports,Cybersecurity,Disposed,2022-10-28,Local Merchants API,83237,SN-GA12ZZ,Disposed Badminton Racket used by Cybersecurity,qr-AST-0100
+AST-0101,Volleyball,Sports,Civil,Active,2018-05-26,Hardware Store,56309,SN-OI2R1P,Active Volleyball used by Civil,qr-AST-0101
+AST-0102,Volleyball,Sports,Civil,Disposed,2022-11-26,TCS Supplier,1810,SN-5MPHXP,Disposed Volleyball used by Civil,qr-AST-0102
+AST-0103,Basketball,Sports,Mech,In Repair,2020-04-07,Furniture Direct,24804,SN-TW6BOZ,In Repair Basketball used by Mech,qr-AST-0103
+AST-0104,Projector,Event Infrastructure,ECE,In Repair,2023-11-14,Cloud Services inc.,33775,SN-8NFYF6,In Repair Projector used by ECE,qr-AST-0104
+AST-0105,Auditorium Chairs,Event Infrastructure,Cybersecurity,Disposed,2018-01-21,EduTech Global,29206,SN-B4EPF3,Disposed Auditorium Chairs used by Cybersecurity,qr-AST-0105
+AST-0106,Sound Mixer,Event Infrastructure,Cybersecurity,Active,2018-03-10,Furniture Direct,5109,SN-KN7UU7,Active Sound Mixer used by Cybersecurity,qr-AST-0106
+AST-0107,Auditorium Stage,Event Infrastructure,CSBS,In Repair,2021-09-21,Cloud Services inc.,12829,SN-JL52I7,In Repair Auditorium Stage used by CSBS,qr-AST-0107
+AST-0108,Podium,Event Infrastructure,Mech,Active,2022-12-09,Local Merchants API,38712,SN-SLWWK4,Active Podium used by Mech,qr-AST-0108
+AST-0109,Conference Table,Event Infrastructure,CSBS,Active,2023-06-25,Local Merchants API,60357,SN-MOPLMG,Active Conference Table used by CSBS,qr-AST-0109
+AST-0110,Sound Mixer,Event Infrastructure,COE,In Repair,2019-01-01,EduTech Global,66037,SN-M7MYDH,In Repair Sound Mixer used by COE,qr-AST-0110
+AST-0111,Projector,Event Infrastructure,Cybersecurity,In Repair,2020-05-04,Local Merchants API,78787,SN-IVDT5T,In Repair Projector used by Cybersecurity,qr-AST-0111
+AST-0112,Speaker System,Event Infrastructure,IT,Disposed,2022-12-21,EduTech Global,73409,SN-107RZ1,Disposed Speaker System used by IT,qr-AST-0112
+AST-0113,LED Display Screen,Event Infrastructure,CSE,In Repair,2023-02-25,Furniture Direct,23882,SN-GZDGTM,In Repair LED Display Screen used by CSE,qr-AST-0113
+AST-0114,LED Display Screen,Event Infrastructure,BME,In Repair,2022-05-15,TCS Supplier,63262,SN-6SUR7X,In Repair LED Display Screen used by BME,qr-AST-0114
+AST-0115,Projector,Event Infrastructure,Cybersecurity,In Repair,2022-01-24,Campus Solutions,31922,SN-G1FZ27,In Repair Projector used by Cybersecurity,qr-AST-0115
+AST-0116,Speaker System,Event Infrastructure,AI&DS,Active,2020-04-19,TCS Supplier,57213,SN-3U6RP4,Active Speaker System used by AI&DS,qr-AST-0116
+AST-0117,Auditorium Chairs,Event Infrastructure,ACCOUNTS,Active,2022-06-14,TCS Supplier,30493,SN-WG4T1G,Active Auditorium Chairs used by ACCOUNTS,qr-AST-0117
+AST-0118,Auditorium Stage,Event Infrastructure,CSBS,In Repair,2020-10-01,Campus Solutions,53751,SN-EZH075,In Repair Auditorium Stage used by CSBS,qr-AST-0118
+AST-0119,Projector,Event Infrastructure,Civil,In Repair,2018-07-23,EduTech Global,33404,SN-M7EEKH,In Repair Projector used by Civil,qr-AST-0119
+AST-0120,Generator,Campus Utilities,CSE,Active,2021-05-26,Campus Solutions,45559,SN-9327LD,Active Generator used by CSE,qr-AST-0120
+AST-0121,CCTV Camera,Campus Utilities,Mech,Disposed,2023-11-23,Campus Solutions,82100,SN-D1FKTH,Disposed CCTV Camera used by Mech,qr-AST-0121
+AST-0122,Water Purifier,Campus Utilities,CSE,Active,2020-04-23,TCS Supplier,55807,SN-36SO4B,Active Water Purifier used by CSE,qr-AST-0122
+AST-0123,Solar Panel System,Campus Utilities,Cybersecurity,Active,2022-08-11,Furniture Direct,87263,SN-BHSGQU,Active Solar Panel System used by Cybersecurity,qr-AST-0123
+AST-0124,Drinking Water Cooler,Campus Utilities,AI&DS,Active,2019-06-03,Campus Solutions,96703,SN-1ZWJRI,Active Drinking Water Cooler used by AI&DS,qr-AST-0124
+AST-0125,CCTV Camera,Campus Utilities,AI&DS,Active,2022-03-10,Cloud Services inc.,12774,SN-F30YKF,Active CCTV Camera used by AI&DS,qr-AST-0125
+AST-0126,Fire Alarm System,Campus Utilities,Mech,Disposed,2018-03-11,EduTech Global,77538,SN-PYM2PW,Disposed Fire Alarm System used by Mech,qr-AST-0126
+AST-0127,Drinking Water Cooler,Campus Utilities,ECE,In Repair,2021-01-24,TCS Supplier,56697,SN-UJX2QD,In Repair Drinking Water Cooler used by ECE,qr-AST-0127
+AST-0128,Water Purifier,Campus Utilities,IT,In Repair,2019-03-18,TCS Supplier,61267,SN-63BUJK,In Repair Water Purifier used by IT,qr-AST-0128
+AST-0129,Solar Panel System,Campus Utilities,ECE,Active,2021-11-01,Cloud Services inc.,29572,SN-T9T5KB,Active Solar Panel System used by ECE,qr-AST-0129
+AST-0130,Water Tank,Campus Utilities,CSBS,In Repair,2020-07-28,Cloud Services inc.,62410,SN-0F2H0F,In Repair Water Tank used by CSBS,qr-AST-0130
+AST-0131,Water Tank,Campus Utilities,BME,Active,2022-10-10,TCS Supplier,35214,SN-P2JZVS,Active Water Tank used by BME,qr-AST-0131
+AST-0132,Drinking Water Cooler,Campus Utilities,AIML,Disposed,2018-12-27,Local Merchants API,64371,SN-LUZJS1,Disposed Drinking Water Cooler used by AIML,qr-AST-0132
+AST-0133,Solar Panel System,Campus Utilities,ACCOUNTS,Active,2019-03-02,Campus Solutions,17536,SN-NNWA3P,Active Solar Panel System used by ACCOUNTS,qr-AST-0133
+AST-0134,Generator,Campus Utilities,CSE,Disposed,2020-01-16,TCS Supplier,98548,SN-N92D86,Disposed Generator used by CSE,qr-AST-0134
+AST-0135,Water Purifier,Campus Utilities,Civil,Active,2019-07-26,EduTech Global,9571,SN-21OY1U,Active Water Purifier used by Civil,qr-AST-0135
