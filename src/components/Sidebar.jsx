@@ -29,7 +29,7 @@ function Sidebar() {
         { to: '/assets', icon: <Package size={20} />, label: 'Assets' },
         { to: '/procurement', icon: <ShoppingCart size={20} />, label: 'Procurement' },
         { to: '/smart-import', icon: <FileUp size={20} />, label: 'Smart Import' },
-        { to: '/verification', icon: <ShieldAlert size={20} />, label: 'Verification' },
+        ...(user?.role !== 'faculty' ? [{ to: '/verification', icon: <ShieldAlert size={20} />, label: 'Verification' }] : []),
         { to: '/defect-detection', icon: <AlertOctagon size={20} />, label: 'Defect Detection' },
         { to: '/approvals', icon: <CheckSquare size={20} />, label: 'Approvals' },
         { to: '/audit', icon: <FileText size={20} />, label: 'Audit Log' },

@@ -55,6 +55,7 @@ function Login() {
                                 >
                                     <option value="chairman">chairman</option>
                                     <option value="principle">principle</option>
+                                    <option value="asset_admin">asset_admin</option>
                                     <option value="faculty">faculty</option>
                                     <option value="HOD">HOD</option>
                                 </select>

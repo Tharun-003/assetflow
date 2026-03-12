@@ -1,18 +1,18 @@
 id,timestamp,user,action,module,details,ip
 1,2023-01-15 09:00,Admin User,Create,Asset,Added Dell XPS 15 (AST-001) to inventory,192.168.1.5
-2,2023-06-20 14:15,John Doe,Edit,Asset,Assigned AST-001 to Lead Developer,192.168.1.12
-3,2024-02-10 11:30,Jane Smith,Edit,Asset,Updated AST-001 software licenses,192.168.1.5
+2,2023-06-20 14:15,User,Edit,Asset,Assigned AST-001 to Lead Developer,192.168.1.12
+3,2024-02-10 11:30,Admin User,Edit,Asset,Updated AST-001 software licenses,192.168.1.5
 4,2021-08-05 10:20,Admin User,Create,Asset,Received Projector 4K (AST-003),192.168.1.5
-5,2022-04-12 09:45,John Doe,Edit,Asset,Moved AST-003 to Main Conference Room,192.168.1.12
-6,2023-09-01 16:00,Jane Smith,Edit,Asset,AST-003 reported lens issue; Status changed to In Repair,192.168.1.25
+5,2022-04-12 09:45,User,Edit,Asset,Moved AST-003 to Main Conference Room,192.168.1.12
+6,2023-09-01 16:00,Admin User,Edit,Asset,AST-003 reported lens issue; Status changed to In Repair,192.168.1.25
 7,2023-05-10 13:00,Admin User,Create,Asset,Installed Cisco Router (AST-004),192.168.1.5
 8,2023-11-01 08:30,Admin User,Create,Asset,Procured MacBook Pro M2 (AST-006),192.168.1.5
-9,2024-01-15 10:00,John Doe,Edit,Asset,Assigned AST-006 to Engineering Team,192.168.1.12
+9,2024-01-15 10:00,User,Edit,Asset,Assigned AST-006 to Engineering Team,192.168.1.12
 10,2020-04-18 07:15,Admin User,Create,Asset,Acquired Electric Forklift (AST-011),192.168.1.5
-11,2022-10-22 14:45,John Doe,Edit,Asset,Routine maintenance completed for AST-011,192.168.1.12
-12,2023-08-05 09:30,Jane Smith,Edit,Asset,Battery replacement logged for AST-011,192.168.1.25
+11,2022-10-22 14:45,User,Edit,Asset,Routine maintenance completed for AST-011,192.168.1.12
+12,2023-08-05 09:30,Admin User,Edit,Asset,Battery replacement logged for AST-011,192.168.1.25
 13,2015-02-14 11:00,Admin User,Create,Asset,Added Ford Transit Van (AST-005),192.168.1.5
-14,2022-11-20 15:30,John Doe,Edit,Asset,AST-005 engine failure reported,192.168.1.12
+14,2022-11-20 15:30,User,Edit,Asset,AST-005 engine failure reported,192.168.1.12
 15,2023-01-10 10:00,Admin User,Edit,Asset,Status of AST-005 changed to Disposed,192.168.1.5
 16,2022-06-25 09:00,Admin User,Create,Asset,Installed Core Distribution Switch (AST-008),192.168.1.5
 17,2023-10-04 09:15,Admin User,Approve,Procurement,Approved REQ-102 (Office Desks),192.168.1.5

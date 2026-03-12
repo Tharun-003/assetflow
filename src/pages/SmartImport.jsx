@@ -5,8 +5,65 @@ import { useNavigate } from 'react-router-dom';
 import {
     FileUp, UploadCloud, BrainCircuit, CheckCircle2, CircleDashed, FileBarChart,
     AlertTriangle, Bot, FileSpreadsheet, Download, Send, CheckSquare, Trash2,
-    IndianRupee, Copy, RefreshCw, Plus, ShieldAlert
+    IndianRupee, Copy, RefreshCw, Plus, ShieldAlert, ChevronDown, ChevronUp
 } from 'lucide-react';
+import * as XLSX from 'xlsx';
+
+const DEPARTMENTS = [
+    "Mech", "CSE", "Civil", "ECE", "COE", "IT", "AI&DS", "AIML", "CSBS", "Cybersecurity", "BME", "EEE", "CDC",
+    "Academic", "IT Infrastructure", "Library", "Hostel", "Food Facility", "Transport", "Medical",
+    "Sports", "Event Infrastructure", "Campus Utilities", "Computer Science",
+    "Mechanical Engineering", "Administration", "IT Support"
+];
+
+const EDU_DEPARTMENTS = [
+    "Mech", "CSE", "Civil", "ECE", "COE", "IT", "AI&DS", "AIML", "CSBS", "Cybersecurity", "BME", "EEE", "CDC"
+];
+
+const ITEM_CATEGORIES = ["IT Equipment", "Furniture", "Peripherals", "Other"];
+
+const CustomSelect = ({ value, onChange, options, className = "", triggerClassName = "bg-white border text-gray-700 font-medium border-gray-300 rounded-xl p-3" }) => {
+    const [isOpen, setIsOpen] = useState(false);
+    const selectRef = useRef(null);
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (selectRef.current && !selectRef.current.contains(event.target)) {
+                setIsOpen(false);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
+
+    return (
+        <div ref={selectRef} className={`relative ${className}`}>
+            <div
+                className={`flex items-center justify-between w-full cursor-pointer hover:border-blue-500 transition-colors select-none ${triggerClassName}`}
+                onClick={() => setIsOpen(!isOpen)}
+            >
+                <span className="text-sm truncate mr-2">{value || 'Select option'}</span>
+                {isOpen ? <ChevronUp size={16} className="text-gray-500 shrink-0" /> : <ChevronDown size={16} className="text-gray-500 shrink-0" />}
+            </div>
+            {isOpen && (
+                <div className="absolute z-[100] w-full mt-1 bg-white border border-gray-200 rounded-md shadow-lg max-h-60 overflow-y-auto">
+                    {options.map((opt) => (
+                        <div
+                            key={opt}
+                            className={`px-3 py-2 text-sm cursor-pointer select-none transition-colors ${value === opt ? 'bg-blue-50 text-blue-700 font-medium' : 'text-gray-700 hover:bg-blue-500 hover:text-white'}`}
+                            onClick={() => {
+                                onChange(opt);
+                                setIsOpen(false);
+                            }}
+                        >
+                            {opt}
+                        </div>
+                    ))}
+                </div>
+            )}
+        </div>
+    );
+};
 
 // Dynamic Extraction Generator
 const generateMockExtraction = (dept, fileName = "") => {
@@ -58,7 +115,8 @@ function SmartImport() {
     const { user } = useAuth();
     const { addBulkAuditLogs, addBulkProcurements } = useData();
     const navigate = useNavigate();
-    const [department, setDepartment] = useState('Computer Science');
+    const [department, setDepartment] = useState('Academic Approvals');
+    const [eduDepartment, setEduDepartment] = useState('CSE');
     const [file, setFile] = useState(null);
     const fileInputRef = useRef(null);
 
@@ -97,7 +155,7 @@ function SmartImport() {
             unitCost: 0,
             conf: 100,
             priority: 'Medium',
-            dept: department,
+            dept: department === 'Academic Approvals' ? eduDepartment : department,
             selected: true
         }]);
     };
@@ -157,14 +215,28 @@ function SmartImport() {
 
             return {
                 item: item.name,
+                category: department, // Use the selected category here for Approvals routing
                 department: item.dept,
                 requestedBy: user?.name || 'System Import',
                 amount: item.qty * item.unitCost,
-                status: 'Pending Verification',
+                status: signals.length > 0 ? 'Pending Verification' : 'Requested',
                 signals
             };
         }));
-        navigate('/verification');
+
+        // Check if any of the mapped items actually need verification
+        // If some do, take the user to the Verification Workbench
+        // If none do, all items were clean, so go straight to Approvals
+        const hasFlaggedItems = selected.some(item => {
+            const isHighValueOrTech = item.qty * item.unitCost > 100000 || item.name.toLowerCase().includes('macbook') || item.name.toLowerCase().includes('laptop');
+            return isHighValueOrTech;
+        });
+
+        if (hasFlaggedItems) {
+            navigate('/verification');
+        } else {
+            navigate('/approvals');
+        }
     };
 
     // Calculate dynamic values for Smart Alerts
@@ -186,25 +258,92 @@ function SmartImport() {
         setFlowState('processing');
         setProcessingStep(0);
 
-        // Simulate AI sequence steps
+        // Simulate AI sequence steps for UI feedback while setting up the reader
         const sequence = [
-            { step: 1, delay: 1000 }, // Uploading
-            { step: 2, delay: 2500 }, // Reading Structure
-            { step: 3, delay: 4500 }, // Extracting Details
-            { step: 4, delay: 6000 }, // Validating
-            { step: 5, delay: 7000 }  // Review transition
+            { step: 1, delay: 500 },  // Uploading
+            { step: 2, delay: 1500 }, // Reading Structure
+            { step: 3, delay: 2500 }, // Extracting Details
+            { step: 4, delay: 3500 }, // Validating
         ];
 
         sequence.forEach(({ step, delay }) => {
-            setTimeout(() => {
-                if (step === 5) {
-                    setExtractedData(generateMockExtraction(department, file?.name));
-                    setFlowState('review');
-                } else {
-                    setProcessingStep(step);
-                }
-            }, delay);
+            setTimeout(() => setProcessingStep(step), delay);
         });
+
+        // Actual File Processing after a slight delay to let "AI UI" finish playing
+        setTimeout(() => {
+            const reader = new FileReader();
+
+            reader.onload = (e) => {
+                try {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    
+                    if (workbook.SheetNames.length === 0) {
+                        throw new Error("No sheets found in the file.");
+                    }
+
+                    const firstSheetName = workbook.SheetNames[0];
+                    const worksheet = workbook.Sheets[firstSheetName];
+                    const jsonData = XLSX.utils.sheet_to_json(worksheet, { defval: "" });
+
+                    if (jsonData.length === 0) {
+                        alert("The uploaded Excel file appears to be empty.");
+                        setFlowState('idle');
+                        return;
+                    }
+
+                    // Map Excel columns to our internal state structure
+                    const mappedData = jsonData.map((row, index) => {
+                        // Attempt to find fields regardless of exact casing/spacing
+                        const getField = (keys) => {
+                            const exactKey = Object.keys(row).find(k => keys.includes(k.trim().toLowerCase()));
+                            return exactKey ? row[exactKey] : null;
+                        };
+
+                        const extractedName = getField(['item name', 'item', 'asset name', 'product', 'description', 'name']) || `Extracted Item ${index + 1}`;
+                        
+                        let extractedAmount = getField(['unit price', 'unit price (₹)', 'price', 'cost', 'amount', 'unit cost']);
+                        extractedAmount = typeof extractedAmount === 'string' ? parseFloat(extractedAmount.replace(/[^0-9.-]+/g,"")) : Number(extractedAmount);
+                        extractedAmount = isNaN(extractedAmount) ? 0 : extractedAmount;
+
+                        let extractedQty = getField(['qty', 'quantity', 'count']);
+                        extractedQty = typeof extractedQty === 'string' ? parseInt(extractedQty.replace(/[^0-9-]+/g,"")) : Number(extractedQty);
+                        extractedQty = isNaN(extractedQty) ? 1 : extractedQty;
+
+                        const extractedDept = getField(['department', 'dept', 'requesting department']) || (department === 'Academic Approvals' ? eduDepartment : department);
+
+                        return {
+                            id: `ai-extracted-${Date.now()}-${index}`,
+                            name: String(extractedName).trim(),
+                            cat: 'IT Equipment', // Default fallback
+                            qty: extractedQty || 1,
+                            unitCost: extractedAmount || 0,
+                            conf: Math.floor(Math.random() * (99 - 85 + 1)) + 85, // Fake high confidence since we exact matched
+                            priority: 'Medium',
+                            dept: extractedDept,
+                            selected: true
+                        };
+                    });
+
+                    setExtractedData(mappedData);
+                    setProcessingStep(5);
+                    setFlowState('review');
+
+                } catch (error) {
+                    console.error("Error parsing Excel file:", error);
+                    alert("Failed to read the Excel file. Please ensure it is a valid .xlsx format.");
+                    setFlowState('idle');
+                }
+            };
+
+            reader.onerror = () => {
+                alert("Failed to read the file.");
+                setFlowState('idle');
+            };
+
+            reader.readAsArrayBuffer(file);
+        }, 4000); // Wait 4 seconds for "processing" UI to finish
     };
 
     const renderUploadZone = () => (
@@ -222,19 +361,24 @@ function SmartImport() {
             <div className="bg-white p-8 rounded-2xl shadow-sm border border-borderContent">
                 <div className="grid grid-cols-2 gap-8 mb-6">
                     <div>
-                        <label className="block text-sm font-semibold text-gray-700 mb-2">Requesting Department</label>
-                        <select
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">Requesting Category</label>
+                        <CustomSelect
                             value={department}
-                            onChange={(e) => setDepartment(e.target.value)}
-                            className="w-full bg-gray-50 border border-gray-300 rounded-xl p-3 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
-                        >
-                            <option value="Computer Science">Computer Science</option>
-                            <option value="Mechanical Engineering">Mechanical Engineering</option>
-                            <option value="Administration">Administration</option>
-                            <option value="IT Support">IT Support</option>
-                        </select>
+                            onChange={(val) => setDepartment(val)}
+                            options={['Academic Approvals', 'IT & Technology', 'Library Approvals', 'Hostel Approvals', 'Food & Kitchen', 'Transport & Vehicles', 'Medical Approvals', 'Sports Approvals', 'Event & AV Equipment', 'Campus Infrastructure']}
+                        />
                     </div>
-                    <div>
+                    {department === 'Academic Approvals' && (
+                        <div>
+                            <label className="block text-sm font-semibold text-gray-700 mb-2">Educational Dept</label>
+                            <CustomSelect
+                                value={eduDepartment}
+                                onChange={(val) => setEduDepartment(val)}
+                                options={EDU_DEPARTMENTS}
+                            />
+                        </div>
+                    )}
+                    <div className={department === 'Academic Approvals' ? 'col-span-2 md:col-span-1' : ''}>
                         <label className="block text-sm font-semibold text-gray-700 mb-2">Uploaded By</label>
                         <input
                             type="text"
@@ -360,8 +504,8 @@ function SmartImport() {
 
             <div className="flex-1 flex space-x-6 min-h-0 pl-2">
                 {/* Left Panel: Grid Layout */}
-                <div className="flex-1 bg-white border border-borderContent rounded-xl shadow-sm overflow-hidden flex flex-col relative">
-                    <div className="overflow-x-auto">
+                <div className="flex-1 bg-white border border-borderContent rounded-xl shadow-sm flex flex-col relative">
+                    <div className="overflow-visible">
                         <table className="w-full text-left border-collapse">
                             <thead>
                                 <tr className="bg-gray-50 border-b border-gray-200 text-xs font-semibold text-gray-500 uppercase tracking-wider">
@@ -378,6 +522,7 @@ function SmartImport() {
                                     <th className="p-3 text-right w-32">Unit Price (₹)</th>
                                     <th className="p-3 text-right bg-blue-50/50 w-32">Total (₹)</th>
                                     <th className="p-3 w-40">Category</th>
+                                    <th className="p-3 w-40">Department</th>
                                     <th className="p-3 text-center">AI Confidence</th>
                                 </tr>
                             </thead>
@@ -423,16 +568,20 @@ function SmartImport() {
                                             ₹{(item.qty * item.unitCost).toLocaleString('en-IN')}
                                         </td>
                                         <td className="p-3">
-                                            <select
+                                            <CustomSelect
                                                 value={item.cat}
-                                                onChange={(e) => handleRowEdit(item.id, 'cat', e.target.value)}
-                                                className="w-full bg-transparent border-none text-sm text-gray-700 outline-none cursor-pointer focus:ring-0"
-                                            >
-                                                <option value="IT Equipment">IT Equipment</option>
-                                                <option value="Furniture">Furniture</option>
-                                                <option value="Peripherals">Peripherals</option>
-                                                <option value="Other">Other</option>
-                                            </select>
+                                                onChange={(val) => handleRowEdit(item.id, 'cat', val)}
+                                                options={ITEM_CATEGORIES}
+                                                triggerClassName="w-full bg-transparent border-none text-sm font-medium text-gray-700 outline-none cursor-pointer p-0"
+                                            />
+                                        </td>
+                                        <td className="p-3">
+                                            <CustomSelect
+                                                value={item.dept}
+                                                onChange={(val) => handleRowEdit(item.id, 'dept', val)}
+                                                options={DEPARTMENTS}
+                                                triggerClassName="w-full bg-transparent border-none text-sm font-medium text-gray-700 outline-none cursor-pointer p-0"
+                                            />
                                         </td>
                                         <td className="p-3 text-center">
                                             <span className={`px-2 py-1 rounded text-xs font-bold border flex items-center justify-center w-max mx-auto ${getConfidenceColor(item.conf)}`}>
@@ -477,7 +626,7 @@ function SmartImport() {
     );
 
     return (
-        <div className="flex flex-col h-[calc(100vh-8rem)] bg-gray-50 text-gray-900 rounded-xl overflow-hidden shadow-sm border border-borderContent">
+        <div className="flex flex-col h-[calc(100vh-8rem)] bg-gray-50 text-gray-900 rounded-xl shadow-sm border border-borderContent">
             <div className="h-16 border-b border-borderContent flex items-center px-6 shrink-0 bg-white z-10 justify-between">
                 <div className="flex items-center">
                     <FileUp className="text-blue-600 mr-3" size={24} />
@@ -490,7 +639,7 @@ function SmartImport() {
                 )}
             </div>
 
-            <div className="flex-1 overflow-y-auto p-6 relative">
+            <div className="flex-1 overflow-visible p-6 relative">
                 {flowState === 'idle' && renderUploadZone()}
                 {flowState === 'processing' && renderProcessingOverlay()}
                 {flowState === 'review' && renderReviewBoard()}

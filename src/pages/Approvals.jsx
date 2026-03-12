@@ -67,13 +67,17 @@ function Approvals() {
 
     // Calculate Summary Stats
     const stats = useMemo(() => {
-        const totalCount = procurements.length;
-        const totalValue = procurements.reduce((sum, p) => sum + (Number(p.amount) || 0), 0);
-        const pendingReview = procurements.filter(p => p.status === 'Requested' || p.status === 'Pending' || p.status === 'Reviewing').length;
+        const baseProcurements = selectedCategory 
+            ? procurements.filter(p => p.category === selectedCategory) 
+            : procurements;
+
+        const totalCount = baseProcurements.length;
+        const totalValue = baseProcurements.reduce((sum, p) => sum + (Number(p.amount) || 0), 0);
+        const pendingReview = baseProcurements.filter(p => p.status === 'Requested' || p.status === 'Pending' || p.status === 'Reviewing').length;
 
         const currentMonth = new Date().getMonth();
         const currentYear = new Date().getFullYear();
-        const approvedThisMonth = procurements.filter(p => {
+        const approvedThisMonth = baseProcurements.filter(p => {
             if (p.status !== 'Approved' && p.status !== 'Purchased' && p.status !== 'Delivered') return false;
             if (!p.date) return false;
             const d = new Date(p.date);
@@ -81,7 +85,7 @@ function Approvals() {
         }).length;
 
         return { totalCount, totalValue, pendingReview, approvedThisMonth };
-    }, [procurements]);
+    }, [procurements, selectedCategory]);
 
     // Detect duplicate in selected category
     const duplicateAlert = useMemo(() => {
@@ -435,10 +439,10 @@ function Approvals() {
                             {(['Requested', 'Pending', 'Pending Verification', 'Reviewing'].includes(selectedReq.status)) && (
                                 <div className="flex space-x-3 items-center">
                                     {/* Role check for action buttons */}
-                                    {(!user || (user.role !== 'chairman' && user.role !== 'principle')) ? (
+                                    {(!user || !['chairman', 'principle', 'asset_admin'].includes(user.role)) ? (
                                         <div className="text-xs text-amber-600 bg-amber-50 px-3 py-2 rounded-lg border border-amber-200 flex items-center shadow-sm">
                                             <ShieldAlert size={14} className="mr-1.5" />
-                                            Only chairman or principle can approve/reject.
+                                            Only asset admin, chairman, or principle can approve/reject.
                                         </div>
                                     ) : (
                                         <>

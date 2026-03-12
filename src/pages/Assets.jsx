@@ -58,7 +58,8 @@ function Assets() {
     const filteredAssets = assets.filter(a => {
         const cMatch = !selectedCategory || getAssetCategory(a) === selectedCategory;
         const sMatch = a.name.toLowerCase().includes(search.toLowerCase()) || a.id.toLowerCase().includes(search.toLowerCase());
-        const dMatch = filterDept === 'All' || a.department === filterDept;
+        const displayDept = ['Academic', 'IT Infrastructure'].includes(getAssetCategory(a)) ? 'Educational Department' : getAssetCategory(a);
+        const dMatch = filterDept === 'All' || displayDept === filterDept;
         return cMatch && sMatch && dMatch;
     });
 
@@ -124,13 +125,44 @@ function Assets() {
                             <div
                                 key={cat.name}
                                 onClick={() => setSelectedCategory(cat.name)}
-                                className="bg-white rounded-xl shadow-sm border border-borderContent p-6 cursor-pointer hover:shadow-md hover:border-primary transition-all duration-200 flex flex-col items-center justify-center text-center group min-h-[160px]"
+                                className={`rounded-xl shadow-sm border border-borderContent p-6 cursor-pointer hover:shadow-md hover:border-primary transition-all duration-200 flex flex-col items-center justify-center text-center group min-h-[160px] relative overflow-hidden z-0 ${!['Academic', 'Library', 'Transport', 'Sports', 'Event Infrastructure', 'Medical', 'IT Infrastructure', 'Campus Utilities', 'Food Facility', 'Hostel'].includes(cat.name) ? 'bg-white' : ''}`}
                             >
-                                <div className="p-4 rounded-full bg-blue-50 text-primary mb-4 group-hover:bg-primary group-hover:text-white transition-colors">
+                                {['Academic', 'Library', 'Transport', 'Sports', 'Event Infrastructure', 'Medical', 'IT Infrastructure', 'Campus Utilities', 'Food Facility', 'Hostel'].includes(cat.name) && (
+                                    <>
+                                        <div
+                                            className="absolute inset-0 z-[-2] bg-cover bg-center bg-no-repeat"
+                                            style={{
+                                                backgroundImage: cat.name === 'Academic'
+                                                    ? "url('/images/academic.webp')"
+                                                    : cat.name === 'Library'
+                                                        ? "url('/images/library cit.jpg')"
+                                                        : cat.name === 'Transport'
+                                                            ? "url('/images/bus.jpg')"
+                                                            : cat.name === 'Sports'
+                                                                ? "url('/images/gym.jpg')"
+                                                                : cat.name === 'Medical'
+                                                                    ? "url('/images/cit.jpg')"
+                                                                    : cat.name === 'IT Infrastructure'
+                                                                        ? "url('/images/it.jpg')"
+                                                                        : cat.name === 'Campus Utilities'
+                                                                            ? "url('/images/campus.jpg')"
+                                                                            : cat.name === 'Food Facility'
+                                                                                ? "url('/images/mess.jpeg')"
+                                                                                : cat.name === 'Hostel'
+                                                                                    ? "url('/images/hostel.jpg')"
+                                                                                    : "url('/images/auditorium-8.jpg')",
+                                                filter: "blur(1.5px) brightness(0.9)",
+                                                transform: "scale(1.05)"
+                                            }}
+                                        />
+                                        <div className="absolute inset-0 z-[-1] bg-white/40 group-hover:bg-white/20 transition-colors duration-200" />
+                                    </>
+                                )}
+                                <div className={`p-4 rounded-full mb-4 transition-colors ${['Academic', 'Library', 'Transport', 'Sports', 'Event Infrastructure', 'Medical', 'IT Infrastructure', 'Campus Utilities', 'Food Facility', 'Hostel'].includes(cat.name) ? 'bg-white text-primary shadow-sm group-hover:bg-primary group-hover:text-white' : 'bg-blue-50 text-primary group-hover:bg-primary group-hover:text-white'}`}>
                                     <Icon size={32} />
                                 </div>
-                                <h3 className="font-bold text-lg text-primaryText mb-1">{cat.name}</h3>
-                                <p className="text-secondaryText text-sm font-medium">{count} Assets</p>
+                                <h3 className={`font-bold text-lg mb-1 relative z-10 ${['Academic', 'Library', 'Transport', 'Sports', 'Event Infrastructure', 'Medical', 'IT Infrastructure', 'Campus Utilities', 'Food Facility', 'Hostel'].includes(cat.name) ? 'text-gray-900' : 'text-primaryText'}`}>{cat.name}</h3>
+                                <p className={`text-sm font-medium relative z-10 ${['Academic', 'Library', 'Transport', 'Sports', 'Event Infrastructure', 'Medical', 'IT Infrastructure', 'Campus Utilities', 'Food Facility', 'Hostel'].includes(cat.name) ? 'text-gray-800' : 'text-secondaryText'}`}>{count} Assets</p>
                             </div>
                         );
                     })}
@@ -157,11 +189,15 @@ function Assets() {
                                 className="border border-borderContent rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-accent shadow-sm"
                             >
                                 <option value="All">All Departments</option>
-                                <option value="IT">IT</option>
-                                <option value="HR">HR</option>
-                                <option value="Management">Management</option>
-                                <option value="Logistics">Logistics</option>
-                                <option value="Facilities">Facilities</option>
+                                <option value="Educational Department">Educational Department</option>
+                                <option value="Library">Library</option>
+                                <option value="Hostel">Hostel</option>
+                                <option value="Food Facility">Food Facility</option>
+                                <option value="Transport">Transport</option>
+                                <option value="Medical">Medical</option>
+                                <option value="Sports">Sports</option>
+                                <option value="Event Infrastructure">Event Infrastructure</option>
+                                <option value="Campus Utilities">Campus Utilities</option>
                             </select>
                         </div>
                     </div>
@@ -185,7 +221,9 @@ function Assets() {
                                     <tr key={asset.id} className="hover:bg-gray-50 transition-colors">
                                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-primary">{asset.id}</td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-primaryText font-medium">{asset.name}</td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-secondaryText">{asset.department}</td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-secondaryText">
+                                            {['Academic', 'IT Infrastructure'].includes(getAssetCategory(asset)) ? 'Educational Department' : getAssetCategory(asset)}
+                                        </td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm">{getStatusBadge(asset.status)}</td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-secondaryText">{asset.purchaseDate}</td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-secondaryText">₹{asset.cost.toLocaleString('en-IN')}</td>

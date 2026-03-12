@@ -60,13 +60,17 @@ function Procurement() {
 
     // Calculate Summary Stats
     const stats = useMemo(() => {
-        const totalCount = procurements.length;
-        const totalValue = procurements.reduce((sum, p) => sum + (Number(p.amount) || 0), 0);
-        const pendingReview = procurements.filter(p => p.status === 'Requested' || p.status === 'Pending' || p.status === 'Reviewing').length;
+        const baseProcurements = selectedCategory 
+            ? procurements.filter(p => p.category === selectedCategory) 
+            : procurements;
+
+        const totalCount = baseProcurements.length;
+        const totalValue = baseProcurements.reduce((sum, p) => sum + (Number(p.amount) || 0), 0);
+        const pendingReview = baseProcurements.filter(p => p.status === 'Requested' || p.status === 'Pending' || p.status === 'Reviewing').length;
 
         const currentMonth = new Date().getMonth();
         const currentYear = new Date().getFullYear();
-        const approvedThisMonth = procurements.filter(p => {
+        const approvedThisMonth = baseProcurements.filter(p => {
             if (p.status !== 'Approved' && p.status !== 'Purchased' && p.status !== 'Delivered') return false;
             if (!p.date) return false;
             const d = new Date(p.date);
@@ -74,7 +78,7 @@ function Procurement() {
         }).length;
 
         return { totalCount, totalValue, pendingReview, approvedThisMonth };
-    }, [procurements]);
+    }, [procurements, selectedCategory]);
 
     // Detect duplicate in selected category
     const duplicateAlert = useMemo(() => {
@@ -190,25 +194,54 @@ function Procurement() {
                             <div
                                 key={cat.name}
                                 onClick={() => setSelectedCategory(cat.name)}
-                                className="bg-white rounded-xl shadow-md border border-borderContent p-6 cursor-pointer hover:shadow-lg hover:border-primary hover:scale-[1.02] transform transition-all duration-200 flex flex-col h-full"
+                                className={`bg-white rounded-xl shadow-md border border-borderContent p-6 cursor-pointer hover:shadow-lg hover:border-primary hover:scale-[1.02] transform transition-all duration-200 flex flex-col h-full relative overflow-hidden z-0`}
                             >
-                                <div className="flex items-center mb-4">
-                                    <div className="p-3 rounded-xl bg-blue-50 text-primary mr-4">
+                                <>
+                                    <div
+                                        className="absolute inset-0 z-[-2] bg-cover bg-center bg-no-repeat"
+                                        style={{
+                                            backgroundImage: cat.name === 'Academic Approvals'
+                                                ? "url('/images/academic.webp')"
+                                                : cat.name === 'IT & Technology'
+                                                    ? "url('/images/it.jpg')"
+                                                    : cat.name === 'Library Approvals'
+                                                        ? "url('/images/library cit.jpg')"
+                                                        : cat.name === 'Hostel Approvals'
+                                                            ? "url('/images/hostel.jpg')"
+                                                            : cat.name === 'Food & Kitchen'
+                                                                ? "url('/images/mess.jpeg')"
+                                                                : cat.name === 'Transport & Vehicles'
+                                                                    ? "url('/images/bus.jpg')"
+                                                                    : cat.name === 'Medical Approvals'
+                                                                        ? "url('/images/cit.jpg')"
+                                                                        : cat.name === 'Sports Approvals'
+                                                                            ? "url('/images/gym.jpg')"
+                                                                            : cat.name === 'Event & AV Equipment'
+                                                                                ? "url('/images/auditorium-8.jpg')"
+                                                                                : "url('/images/campus.jpg')",
+                                            filter: "blur(1.5px) brightness(0.9)",
+                                            transform: "scale(1.05)"
+                                        }}
+                                    />
+                                    <div className="absolute inset-0 z-[-1] bg-white/40 group-hover:bg-white/20 transition-colors duration-200" />
+                                </>
+                                <div className="flex items-center mb-4 relative z-10">
+                                    <div className="p-3 rounded-xl mr-4 transition-colors bg-white text-slate-900 shadow-sm">
                                         <Icon size={24} />
                                     </div>
-                                    <h3 className="font-bold text-lg text-primaryText">{cat.name}</h3>
+                                    <h3 className="font-bold text-lg text-slate-900">{cat.name}</h3>
                                 </div>
-                                <div className="flex justify-between items-center mb-4 border-b border-gray-100 pb-4">
+                                <div className="flex justify-between items-center mb-4 border-b border-gray-100/50 pb-4 relative z-10">
                                     <div>
-                                        <p className="text-xs text-secondaryText font-semibold uppercase tracking-wider mb-1">Requests</p>
-                                        <p className="text-lg font-bold text-gray-800">{count}</p>
+                                        <p className="text-xs font-semibold uppercase tracking-wider mb-1 text-slate-900">Requests</p>
+                                        <p className="text-lg font-bold text-slate-900">{count}</p>
                                     </div>
                                     <div className="text-right">
-                                        <p className="text-xs text-secondaryText font-semibold uppercase tracking-wider mb-1">Total Value</p>
-                                        <p className="text-lg font-bold text-gray-800">₹{value.toLocaleString('en-IN')}</p>
+                                        <p className="text-xs font-semibold uppercase tracking-wider mb-1 text-slate-900">Total Value</p>
+                                        <p className="text-lg font-bold text-slate-900">₹{value.toLocaleString('en-IN')}</p>
                                     </div>
                                 </div>
-                                <div className="text-xs font-medium text-gray-500 bg-gray-50 p-2 rounded-md text-center mt-auto">
+                                <div className="text-xs font-semibold p-2 rounded-md text-center mt-auto relative z-10 bg-white/60 text-slate-900 shadow-sm border border-white/40 backdrop-blur-sm">
                                     {pending} Pending · {approved} Approved · {rejected} Rejected
                                 </div>
                             </div>

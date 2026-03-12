@@ -42,7 +42,7 @@ function VerificationWorkbench() {
         setTimer(0);
     }, [selectedReq]);
 
-    if (!user || !['chairman', 'principle', 'HOD'].includes(user.role)) {
+    if (!user || !['chairman', 'principle', 'HOD', 'asset_admin'].includes(user.role)) {
         return <Navigate to="/dashboard" replace />;
     }
 
@@ -67,8 +67,8 @@ function VerificationWorkbench() {
         if (!canSubmit && actionType !== 'Reject at Verification') return;
 
         let targetStatus = '';
-        if (actionType === 'Approve for Forwarding') targetStatus = 'Pending';
-        if (actionType === 'Conditional Forward') targetStatus = 'Pending';
+        if (actionType === 'Approve for Forwarding') targetStatus = 'Requested'; // Matches Approvals pipeline
+        if (actionType === 'Conditional Forward') targetStatus = 'Requested';
         if (actionType === 'Return to Requester') targetStatus = 'Returned';
         if (actionType === 'Reject at Verification') {
             targetStatus = 'Rejected';
@@ -231,8 +231,12 @@ function VerificationWorkbench() {
                                                                     {evidenceFields.map((field, i) => (
                                                                         <div key={i} className={`grid grid-cols-3 p-3 border-b last:border-0 border-gray-100 ${field.match ? 'bg-red-50/50 text-red-800' : 'text-gray-600'}`}>
                                                                             <span className="font-medium text-gray-900">{field.name}</span>
-                                                                            <span className={field.match ? "font-semibold" : ""}>{field.value1}</span>
-                                                                            <span className={field.match ? "font-semibold" : ""}>{field.value2}</span>
+                                                                            <span className={field.match ? "font-semibold" : ""}>
+                                                                                {field.name === 'Amount' && !isNaN(field.value1) ? `₹${Number(field.value1).toLocaleString('en-IN')}` : field.value1}
+                                                                            </span>
+                                                                            <span className={field.match ? "font-semibold" : ""}>
+                                                                                {field.name === 'Amount' && !isNaN(field.value2) ? `₹${Number(field.value2).toLocaleString('en-IN')}` : field.value2}
+                                                                            </span>
                                                                         </div>
                                                                     ))}
                                                                 </div>

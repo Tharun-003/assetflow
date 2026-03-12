@@ -66,6 +66,118 @@ function QrScanner() {
         console.warn('QR Reader Warning/Error:', error);
     };
 
+    const calculateResaleValue = (asset) => {
+        if (!asset || !asset.purchaseDate || !asset.cost) return null;
+        
+        const purchase = new Date(asset.purchaseDate);
+        const now = new Date();
+        const ageInYears = Math.max(0, (now - purchase) / (1000 * 60 * 60 * 24 * 365.25));
+        
+        // Base depreciation rate & Lifespan per category
+        let rate = 0.20; // 20% default
+        let baseLifespanYears = 5; 
+        let warrantyYears = 1;
+        
+        if (asset.category?.includes('IT') || asset.category?.includes('Computer')) {
+            rate = 0.33; 
+            baseLifespanYears = 4;
+            warrantyYears = 3;
+        }
+        if (asset.category?.includes('Furniture')) {
+            rate = 0.10; 
+            baseLifespanYears = 10;
+            warrantyYears = 5;
+        }
+        if (asset.category?.includes('Vehicles') || asset.category?.includes('Transport') || asset.category?.includes('Vehicle')) {
+            rate = 0.15; 
+            baseLifespanYears = 8;
+            warrantyYears = 3;
+        }
+
+        // Calculate key dates
+        const warrantyEnd = new Date(purchase);
+        warrantyEnd.setFullYear(warrantyEnd.getFullYear() + warrantyYears);
+        
+        const endOfLife = new Date(purchase);
+        endOfLife.setFullYear(endOfLife.getFullYear() + baseLifespanYears);
+        
+        // Optimal resale is typically 6 months before warranty expires (to retain maximum secondary market value)
+        const optimalResale = new Date(warrantyEnd);
+        optimalResale.setMonth(optimalResale.getMonth() - 6);
+
+        // Condition multiplier based on usage/status
+        let conditionMult = 1.0;
+        let conditionText = 'Fair / Standard';
+        if (asset.status === 'Active') { conditionMult = 1.1; conditionText = 'Good (Active)'; }
+        if (asset.status === 'In Repair') { conditionMult = 0.7; conditionText = 'Poor (In Repair)'; }
+        if (asset.status === 'Disposed') { conditionMult = 0.1; conditionText = 'Scrap (Disposed)'; }
+        
+        // Value = Cost * (1 - rate)^age * condition
+        const depreciated = asset.cost * Math.pow(1 - rate, ageInYears) * conditionMult;
+        
+        // Salvage value is 5% minimum
+        const salvage = asset.cost * 0.05;
+        const currentVal = Math.round(Math.max(depreciated, salvage));
+        
+        const formatDate = (dateObj) => dateObj.toISOString().split('T')[0];
+
+        // Determine timeline status
+        const isWarrantyActive = now < warrantyEnd;
+        const isPastOptimal = now > optimalResale;
+        const isEOL = now >= endOfLife;
+
+        // Actionable Recommendation Logic
+        let recommendation = 'Keep';
+        let reasoning = `Asset is in good condition and continues to provide value.`;
+        let recColor = 'text-green-700 bg-green-50 border-green-200';
+        let iconColor = 'text-green-500';
+        
+        if (asset.status === 'Disposed') {
+            recommendation = 'Disposed';
+            reasoning = 'Asset has already been retired/disposed.';
+            recColor = 'text-gray-700 bg-gray-100 border-gray-300';
+            iconColor = 'text-gray-500';
+        } else if (isEOL || currentVal <= salvage) {
+            recommendation = 'Dispose / Recycle';
+            reasoning = `Asset has reached End-Of-Life or its value has depreciated to scrap levels (₹${currentVal.toLocaleString('en-IN')}). Maintenance costs likely exceed remaining value.`;
+            recColor = 'text-red-700 bg-red-50 border-red-200';
+            iconColor = 'text-red-500';
+        } else if (isPastOptimal && isWarrantyActive) {
+            recommendation = 'Resell Immediately';
+            reasoning = `Optimal resale window has passed, but warranty is still active. Sell now to recover maximum remaining value (₹${currentVal.toLocaleString('en-IN')}) before warranty expires.`;
+            recColor = 'text-amber-700 bg-amber-50 border-amber-200';
+            iconColor = 'text-amber-500';
+        } else if (!isPastOptimal && ageInYears > 0.5 && conditionMult >= 1.0) {
+            recommendation = 'Hold / Monitor';
+            reasoning = `Approaching optimal resale window (${formatDate(optimalResale)}). Monitor market conditions to prepare for liquidation.`;
+            recColor = 'text-blue-700 bg-blue-50 border-blue-200';
+            iconColor = 'text-blue-500';
+        } else if (asset.status === 'In Repair' && currentVal < (asset.cost * 0.2)) {
+            recommendation = 'Dispose (Cost Inefficient)';
+            reasoning = `Asset is in repair but holds less than 20% of original value. It may be more cost-effective to replace rather than fix.`;
+            recColor = 'text-red-700 bg-red-50 border-red-200';
+            iconColor = 'text-red-500';
+        }
+
+        return {
+            current: currentVal,
+            age: ageInYears.toFixed(1),
+            rate: Math.round(rate * 100),
+            loss: Math.round(asset.cost - currentVal),
+            warrantyDate: formatDate(warrantyEnd),
+            isWarrantyActive,
+            eolDate: formatDate(endOfLife),
+            isEOL,
+            optimalResaleDate: formatDate(optimalResale),
+            isPastOptimal,
+            conditionText,
+            recommendation,
+            reasoning,
+            recColor,
+            iconColor
+        };
+    };
+
     return (
         <div className="flex flex-col h-full max-w-2xl mx-auto space-y-6">
             <div className="flex justify-between items-center px-4 md:px-0">
@@ -161,7 +273,7 @@ function QrScanner() {
                         </div>
                     ) : (
                         <div className="animate-fade-in">
-                            <div className="flex justify-between items-start mb-6">
+                            <div className="flex flex-col sm:flex-row justify-between items-start mb-6 border-b border-borderContent pb-6">
                                 <div>
                                     <h3 className="text-xl font-bold text-primaryText flex items-center">
                                         {scannedAsset.name}
@@ -174,10 +286,35 @@ function QrScanner() {
                                     </h3>
                                     <p className="text-sm text-secondaryText font-mono mt-1">{scannedAsset.id} • {scannedAsset.category}</p>
                                 </div>
-                                <div className="bg-blue-50 text-primary p-3 rounded-lg border border-blue-100 shadow-sm text-center">
-                                    <p className="text-xs font-semibold uppercase font-mono tracking-wider">Value</p>
-                                    <p className="text-lg font-bold">₹{scannedAsset.cost.toLocaleString('en-IN')}</p>
-                                </div>
+                                
+                                {(() => {
+                                    const metrics = calculateResaleValue(scannedAsset);
+                                    return (
+                                        <div className="bg-white p-5 rounded-2xl border border-borderContent shadow-md mt-6 sm:mt-0 min-w-[280px] self-stretch flex flex-col justify-between hover:border-blue-300 hover:shadow-lg transition-all">
+                                            <div>
+                                                <p className="text-xs font-bold text-blue-800 uppercase tracking-widest mb-3 flex items-center">
+                                                    <Activity size={12} className="mr-1.5" /> Est. Market Value
+                                                </p>
+                                                <div className="flex items-baseline mb-4">
+                                                    <span className="text-4xl font-black text-gray-900 tracking-tight">₹{metrics.current.toLocaleString('en-IN')}</span>
+                                                </div>
+                                            </div>
+                                            
+                                            <div className="space-y-2 pt-4 border-t border-gray-100">
+                                                <div className="flex justify-between items-center bg-gray-50 px-3 py-2 rounded-lg text-sm">
+                                                    <span className="text-gray-500 font-medium">Original Cost</span>
+                                                    <span className="font-bold text-gray-700">₹{scannedAsset.cost.toLocaleString('en-IN')}</span>
+                                                </div>
+                                                <div className="flex justify-between items-center bg-red-50 px-3 py-2 rounded-lg text-sm border border-red-100">
+                                                    <span className="text-red-600 font-medium drop-shadow-sm flex items-center">
+                                                        Value Lost <span className="text-[10px] ml-1.5 bg-red-100 px-1.5 py-0.5 rounded text-red-700">-{metrics.age}y</span>
+                                                    </span>
+                                                    <span className="font-bold text-red-700 tracking-wide">-₹{metrics.loss.toLocaleString('en-IN')}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    );
+                                })()}
                             </div>
 
                             <div className="grid grid-cols-2 gap-4 mb-6">
@@ -189,6 +326,38 @@ function QrScanner() {
                                     <span className="text-xs text-secondaryText">Purchase Date</span>
                                     <p className="font-medium text-primaryText text-sm">{scannedAsset.purchaseDate}</p>
                                 </div>
+                                
+                                {(() => {
+                                    const metrics = calculateResaleValue(scannedAsset);
+                                    if (!metrics) return null;
+                                    return (
+                                        <>
+                                            <div className="bg-gray-50 p-3 rounded-lg border border-borderContent">
+                                                <span className="text-xs text-secondaryText">Condition / Status</span>
+                                                <p className="font-medium text-primaryText text-sm">{metrics.conditionText}</p>
+                                            </div>
+                                            <div className={`p-3 rounded-lg border ${metrics.isWarrantyActive ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200'}`}>
+                                                <span className={`text-xs ${metrics.isWarrantyActive ? 'text-green-700' : 'text-red-700'}`}>Warranty Status</span>
+                                                <p className={`font-bold text-sm ${metrics.isWarrantyActive ? 'text-green-800' : 'text-red-800'}`}>
+                                                    {metrics.isWarrantyActive ? `Active until ${metrics.warrantyDate}` : `Expired on ${metrics.warrantyDate}`}
+                                                </p>
+                                            </div>
+                                            <div className={`p-3 rounded-lg border ${metrics.isPastOptimal ? 'bg-amber-50 border-amber-200' : 'bg-blue-50 border-blue-200'}`}>
+                                                <span className={`text-xs ${metrics.isPastOptimal ? 'text-amber-700' : 'text-blue-700'}`}>Optimal Resale Window</span>
+                                                <p className={`font-bold text-sm ${metrics.isPastOptimal ? 'text-amber-800' : 'text-blue-800'}`}>
+                                                    {metrics.isPastOptimal ? `Passed (${metrics.optimalResaleDate})` : `Before ${metrics.optimalResaleDate}`}
+                                                </p>
+                                            </div>
+                                            <div className={`p-3 rounded-lg border ${metrics.isEOL ? 'bg-gray-100 border-gray-300' : 'bg-gray-50 border-borderContent'}`}>
+                                                <span className="text-xs text-secondaryText">Est. End of Life</span>
+                                                <p className={`font-bold text-sm ${metrics.isEOL ? 'text-gray-500' : 'text-primaryText'}`}>
+                                                    {metrics.isEOL ? `Reached (${metrics.eolDate})` : metrics.eolDate}
+                                                </p>
+                                            </div>
+                                        </>
+                                    );
+                                })()}
+                                
                                 <div className="bg-gray-50 p-3 rounded-lg border border-borderContent">
                                     <span className="text-xs text-secondaryText">Vendor</span>
                                     <p className="font-medium text-primaryText text-sm">{scannedAsset.vendor || 'N/A'}</p>
@@ -202,6 +371,24 @@ function QrScanner() {
                                     <p className="font-medium text-primaryText text-sm">{scannedAsset.description || 'N/A'}</p>
                                 </div>
                             </div>
+
+                            {/* AI Recommendation Banner */}
+                            {(() => {
+                                const metrics = calculateResaleValue(scannedAsset);
+                                if (!metrics) return null;
+                                return (
+                                    <div className={`mt-2 mb-6 p-5 rounded-xl border ${metrics.recColor} flex flex-col sm:flex-row items-start sm:items-center shadow-sm`}>
+                                        <div className={`p-3 bg-white rounded-full shadow-sm mr-4 mb-3 sm:mb-0 border ${metrics.recColor}`}>
+                                            <Activity size={24} className={metrics.iconColor} />
+                                        </div>
+                                        <div>
+                                            <p className="text-xs font-bold uppercase tracking-wider opacity-80 mb-1">AI Recommendation</p>
+                                            <h4 className="text-lg font-bold mb-1">{metrics.recommendation}</h4>
+                                            <p className="text-sm opacity-90">{metrics.reasoning}</p>
+                                        </div>
+                                    </div>
+                                );
+                            })()}
 
                             {/* Asset History Timeline */}
                             <div className="mt-8 border-t border-borderContent pt-6">
