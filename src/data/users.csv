@@ -1,6 +1,6 @@
 id,name,email,role,department
 1,Chairman User,chairman@assetflow.gov,chairman,Management
-2,Principle User,principle@assetflow.gov,principle,Administration
+2,Principal User,principal@assetflow.gov,principal,Administration
 3,Faculty User,faculty@assetflow.gov,faculty,Academics
 4,HOD User,hod@assetflow.gov,HOD,IT
 5,Asset Admin,admin@assetflow.gov,asset_admin,Facilities

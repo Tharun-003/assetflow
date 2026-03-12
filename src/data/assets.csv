@@ -135,3 +135,6 @@ AST-0133,Solar Panel System,Campus Utilities,ACCOUNTS,Active,2019-03-02,Campus S
 AST-0134,Generator,Campus Utilities,CSE,Disposed,2020-01-16,TCS Supplier,782101,SN-N92D86,Disposed Generator used by CSE,qr-AST-0134
 AST-0135,Water Purifier,Campus Utilities,Civil,Active,2019-07-26,EduTech Global,46206,SN-21OY1U,Active Water Purifier used by Civil,qr-AST-0135
 AST-0136,Dell Desktop System,IT Infrastructure,CSBS,Active,2023-11-20,Cloud Services inc.,64647,SN-DELLXPS1,Active Dell Desktop System used by CSBS,qr-AST-0136
+AST-0137,Dell Desktop System,IT Infrastructure,IT,Active,2021-08-15,Cloud Services inc.,58500,SN-DELLXPS2,Active Dell Desktop System used by IT,qr-AST-0137
+AST-0138,Dell Desktop System,IT Infrastructure,IT,Active,2022-03-10,EduTech Global,62200,SN-DELLXPS3,Active Dell Desktop System used by IT,qr-AST-0138
+AST-0139,Dell Desktop System,IT Infrastructure,IT,Active,2023-01-22,TCS Supplier,59800,SN-DELLXPS4,Active Dell Desktop System used by IT,qr-AST-0139

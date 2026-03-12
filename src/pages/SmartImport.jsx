@@ -174,69 +174,29 @@ function SmartImport() {
         addBulkAuditLogs(selected.map(item => ({
             action: 'Smart Import',
             module: 'Asset Review',
-            details: `Imported ${item.qty}x ${item.name} from ${file?.name} (Conf: ${item.conf}%)`
+            details: `Imported ${item.qty}x ${item.name} from ${file?.name || 'Manual Entry'} (Conf: ${item.conf}%)`
         })));
         navigate('/audit');
     };
 
-    const handleSendToVerification = () => {
+    const handleSendToApprovals = () => {
         const selected = extractedData.filter(i => i.selected);
         if (selected.length === 0) return alert("Select items to send");
 
-        // Push to Verification Queue with dynamic generated signals
-        addBulkProcurements(selected.map(item => {
-            const signals = [];
-            const isHighValueOrTech = item.qty * item.unitCost > 100000 || item.name.toLowerCase().includes('macbook') || item.name.toLowerCase().includes('laptop');
-
-            if (isHighValueOrTech) {
-                const currentAmount = item.qty * item.unitCost;
-                // Generate a historical amount that is 5% to 15% cheaper
-                const historicalAmount = Math.floor(currentAmount * (1 - (Math.random() * 0.10 + 0.05)));
-
-                signals.push({
-                    id: `SIG-${Math.floor(Math.random() * 1000) + 100}`,
-                    type: 'Duplicate',
-                    name: 'Identical Request Clone',
-                    severity: 'Critical',
-                    confidence: 96,
-                    description: 'Same item, vendor, and quantity were submitted within the last 30 days.',
-                    evidence: {
-                        type: 'duplicate',
-                        fields: [
-                            { name: 'Item', match: true, value1: `${item.qty}x ${item.name}`, value2: `${item.qty}x ${item.name}` },
-                            { name: 'Amount', match: false, value1: currentAmount, value2: historicalAmount },
-                            { name: 'Date', match: false, value1: 'Today', value2: 'Last Month' }
-                        ]
-                    },
-                    resolution: null,
-                    resolutionNote: ''
-                });
-            }
-
-            return {
-                item: item.name,
-                category: department, // Use the selected category here for Approvals routing
-                department: item.dept,
-                requestedBy: user?.name || 'System Import',
-                amount: item.qty * item.unitCost,
-                status: signals.length > 0 ? 'Pending Verification' : 'Requested',
-                signals
-            };
+        // Push directly to Approvals queue
+        const procurements = selected.map(item => ({
+            item: item.name,
+            category: department, // Approvals groups tabs by this high-level 'category' state
+            department: item.dept,
+            requestedBy: user?.name || 'System Import',
+            amount: item.qty * item.unitCost,
+            status: 'Requested',
+            date: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }),
+            signals: []
         }));
 
-        // Check if any of the mapped items actually need verification
-        // If some do, take the user to the Verification Workbench
-        // If none do, all items were clean, so go straight to Approvals
-        const hasFlaggedItems = selected.some(item => {
-            const isHighValueOrTech = item.qty * item.unitCost > 100000 || item.name.toLowerCase().includes('macbook') || item.name.toLowerCase().includes('laptop');
-            return isHighValueOrTech;
-        });
-
-        if (hasFlaggedItems) {
-            navigate('/verification');
-        } else {
-            navigate('/approvals');
-        }
+        addBulkProcurements(procurements);
+        navigate('/approvals');
     };
 
     // Calculate dynamic values for Smart Alerts
@@ -551,16 +511,16 @@ function SmartImport() {
                                         <td className="p-3">
                                             <input
                                                 type="number"
-                                                value={item.qty}
-                                                onChange={(e) => handleRowEdit(item.id, 'qty', parseInt(e.target.value) || 0)}
+                                                value={item.qty === 0 ? '' : item.qty}
+                                                onChange={(e) => handleRowEdit(item.id, 'qty', e.target.value === '' ? 0 : Number(e.target.value))}
                                                 className="w-16 mx-auto block text-center bg-gray-50 border border-gray-300 rounded px-2 py-1 outline-none text-sm font-medium focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                                             />
                                         </td>
                                         <td className="p-3">
                                             <input
                                                 type="number"
-                                                value={item.unitCost}
-                                                onChange={(e) => handleRowEdit(item.id, 'unitCost', parseInt(e.target.value) || 0)}
+                                                value={item.unitCost === 0 ? '' : item.unitCost}
+                                                onChange={(e) => handleRowEdit(item.id, 'unitCost', e.target.value === '' ? 0 : Number(e.target.value))}
                                                 className="w-full text-right bg-gray-50 border border-gray-300 rounded px-2 py-1 outline-none text-sm font-medium focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                                             />
                                         </td>
@@ -614,11 +574,8 @@ function SmartImport() {
                     </button>
                 </div>
                 <div className="flex space-x-3">
-                    <button onClick={handleSendToAudit} className="px-6 py-2.5 bg-green-600 text-white font-bold text-sm rounded-lg flex items-center hover:bg-green-700 shadow-sm transition-colors cursor-pointer">
-                        <CheckSquare size={16} className="mr-2" /> Send to Audit
-                    </button>
-                    <button onClick={handleSendToVerification} className="px-6 py-2.5 bg-blue-600 text-white font-bold text-sm rounded-lg flex items-center hover:bg-blue-700 shadow-sm transition-colors cursor-pointer">
-                        <ShieldAlert size={16} className="mr-2" /> Send to Verification
+                    <button onClick={handleSendToApprovals} className="px-6 py-2.5 bg-blue-600 text-white font-bold text-sm rounded-lg flex items-center hover:bg-blue-700 shadow-sm transition-colors cursor-pointer">
+                        <Send size={16} className="mr-2" /> Submit to Approvals
                     </button>
                 </div>
             </div>

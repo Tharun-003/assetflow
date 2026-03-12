@@ -19,6 +19,8 @@ function DefectDetection() {
     const [description, setDescription] = useState('');
     const [workflowStage, setWorkflowStage] = useState(0); // 0: Dept, 1: HOD, 2: Finance, 3: Admin, 4: Done
     const [reportData, setReportData] = useState(null);
+    const [selectedDepartment, setSelectedDepartment] = useState('IT Dept');
+    const [currentDefectId, setCurrentDefectId] = useState(null);
 
     if (!user) {
         return <Navigate to="/login" replace />;
@@ -106,29 +108,45 @@ function DefectDetection() {
 
     const submitToWorkflow = () => {
         setFlowState('workflow_active');
-        setWorkflowStage(1); // Department has submitted, waiting on HOD
+        setWorkflowStage(1); // Department has submitted, waiting on Principal
 
         const defectId = `DEF-${Math.floor(Math.random() * 10000)}`;
+        setCurrentDefectId(defectId);
+        
         addDefect({
             id: defectId,
-            status: 'Pending HOD',
+            status: 'Pending Principal',
             date: new Date().toISOString()
-        });
-
-        // BUG FIX: Automatically populate the Approval board with this return request
-        addProcurement({
-            item: `Return Authorization: Damaged Asset (${defectId})`,
-            department: 'Computer Science',
-            requestedBy: user?.name || 'HOD',
-            amount: 0,
-            status: 'Pending', // Setting to pending forces it to appear on Kanban
-            signals: []
         });
     };
 
     const advanceWorkflow = (targetStage) => {
         setWorkflowStage(targetStage);
         if (targetStage === 2) {
+            const categoryMapping = {
+                "IT Dept": "IT & Technology",
+                "Admin": "Campus Infrastructure",
+                "Library Dept": "Library Approvals",
+                "Sports Dept": "Sports Approvals",
+                "Hostel Admin": "Hostel Approvals",
+                "Medical Center": "Medical Approvals",
+                "Transport Dept": "Transport & Vehicles",
+                "Event Committee": "Event & AV Equipment",
+                "Campus Security": "Campus Infrastructure",
+                "Academic Block": "Academic Approvals"
+            };
+
+            addProcurement({
+                item: `Return Authorization: Damaged Asset (${currentDefectId || 'DEF-1000'})`,
+                category: categoryMapping[selectedDepartment] || 'IT & Technology',
+                department: selectedDepartment,
+                requestedBy: user?.name || 'Principal',
+                amount: 0,
+                status: 'Requested',
+                date: new Date().toISOString().split('T')[0],
+                signals: []
+            });
+
             navigate('/approvals');
         }
     };
@@ -172,7 +190,25 @@ function DefectDetection() {
                 </div>
 
                 <div className="flex flex-col">
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">2. Departmental Description</label>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">2. Department</label>
+                    <select
+                        value={selectedDepartment}
+                        onChange={(e) => setSelectedDepartment(e.target.value)}
+                        className="w-full bg-gray-50 border border-gray-300 rounded-xl p-3 text-sm focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all mb-4"
+                    >
+                        <option value="IT Dept">IT Dept</option>
+                        <option value="Admin">Admin</option>
+                        <option value="Library Dept">Library Dept</option>
+                        <option value="Sports Dept">Sports Dept</option>
+                        <option value="Hostel Admin">Hostel Admin</option>
+                        <option value="Medical Center">Medical Center</option>
+                        <option value="Transport Dept">Transport Dept</option>
+                        <option value="Event Committee">Event Committee</option>
+                        <option value="Campus Security">Campus Security</option>
+                        <option value="Academic Block">Academic Block</option>
+                    </select>
+
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">3. Departmental Description</label>
                     <textarea
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
@@ -278,7 +314,7 @@ function DefectDetection() {
 
     const stages = [
         { title: 'Department', desc: 'Defect Logged & Evidenced' },
-        { title: 'HOD', desc: 'Return Request Approved' }
+        { title: 'Principal', desc: 'Return Request Approved' }
     ];
 
     const renderWorkflowTracker = () => (
@@ -287,8 +323,8 @@ function DefectDetection() {
                 <Activity className="mr-3 text-blue-600" size={24} /> Live Delivery Return Tracker
             </h3>
 
-            <div className="flex justify-between items-center relative py-12 px-4 max-w-2xl mx-auto">
-                <div className="absolute left-16 right-16 top-1/2 -mt-1 h-2 bg-gray-100 rounded-full z-0 overflow-hidden">
+            <div className="flex justify-around items-start relative py-12 px-4 max-w-2xl mx-auto">
+                <div className="absolute left-[25%] right-[25%] top-[76px] -mt-1 h-2 bg-gray-100 rounded-full z-0 overflow-hidden">
                     <div
                         className="h-full bg-blue-500 transition-all duration-700 ease-in-out"
                         style={{ width: `${(Math.min(workflowStage, 1) / 1) * 100}%` }}
@@ -299,7 +335,7 @@ function DefectDetection() {
                     const isCompleted = workflowStage > idx;
                     const isCurrent = workflowStage === idx;
                     return (
-                        <div key={idx} className="relative z-10 flex flex-col items-center w-48 text-center">
+                        <div key={idx} className="relative z-10 flex flex-col items-center w-1/2 text-center pt-0">
                             <div className={`w-14 h-14 rounded-full flex items-center justify-center font-bold text-lg mb-3 shadow-md transition-all duration-300 border-4 ${isCompleted ? 'bg-green-500 text-white border-green-200' : isCurrent ? 'bg-blue-600 text-white border-blue-200 ring-4 ring-blue-50 scale-110' : 'bg-gray-200 text-gray-400 border-gray-100'}`}>
                                 {isCompleted ? <Check size={24} /> : idx + 1}
                             </div>
@@ -312,7 +348,7 @@ function DefectDetection() {
                                     onClick={() => advanceWorkflow(idx + 1)}
                                     className="mt-4 bg-gray-900 hover:bg-black text-white text-xs px-4 py-2 rounded shadow-md transition-colors"
                                 >
-                                    Provide HOD Approval
+                                    Provide Principal Approval
                                 </button>
                             )}
                         </div>

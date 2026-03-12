@@ -1,6 +1,6 @@
 id,item,category,department,requestedBy,amount,status,date
-APR-201,Smart Board Purchase,Academic,Academic Block,Dr. Sharma,150000,Requested,2024-03-01
-APR-202,Smart Board Upgrade,Academic,Academic Block,Prof. Gupta,160000,Reviewing,2024-03-05
+APR-201,Smart Board Purchase,Academic Approvals,Academic Block,Dr. Sharma,150000,Pending Verification,2024-03-01
+APR-202,Smart Board Upgrade,Academic Approvals,Academic Block,Prof. Gupta,160000,Reviewing,2024-03-05
 APR-203,Laptop Batch Purchase,IT & Technology,IT Dept,Amit Singh,845000,Approved,2024-02-15
 APR-204,Laptop Procurement,IT & Technology,IT Dept,Rajiv Rao,920000,Requested,2024-03-08
 APR-205,Server Room Upgrade,IT & Technology,IT Dept,Neha Verma,2500000,Purchased,2024-01-10

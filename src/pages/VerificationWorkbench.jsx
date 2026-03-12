@@ -42,7 +42,7 @@ function VerificationWorkbench() {
         setTimer(0);
     }, [selectedReq]);
 
-    if (!user || !['chairman', 'principle', 'HOD', 'asset_admin'].includes(user.role)) {
+    if (!user || !['chairman', 'principal', 'HOD', 'asset_admin'].includes(user.role)) {
         return <Navigate to="/dashboard" replace />;
     }
 

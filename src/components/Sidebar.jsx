@@ -46,7 +46,12 @@ function Sidebar() {
                 <h1 className="text-2xl font-black tracking-widest text-white text-center font-sans tracking-tight">AssetFlow</h1>
                 <p className="text-[10px] text-blue-200 uppercase tracking-widest mt-1 font-semibold opacity-75">Management System</p>
             </div>
-            <nav className="flex-1 mt-6">
+            <nav className="flex-1 mt-6 overflow-y-auto" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+                <style>{`
+                    nav::-webkit-scrollbar {
+                        display: none;
+                    }
+                `}</style>
                 <ul>
                     {navLinks.map((link) => (
                         <li key={link.to} className="mb-2">

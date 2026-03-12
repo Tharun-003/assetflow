@@ -31,30 +31,36 @@ function Login() {
     };
 
     return (
-        <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8 font-sans">
-            <div className="sm:mx-auto sm:w-full sm:max-w-md text-center">
+        <div className="min-h-screen flex flex-col justify-center py-12 sm:px-6 lg:px-8 font-sans relative">
+            <div 
+                className="absolute inset-0 bg-cover bg-center z-0"
+                style={{ backgroundImage: 'url("/images/cit main image.jpg")' }}
+            />
+            <div className="absolute inset-0 bg-black/30 backdrop-blur-md z-0" />
+            
+            <div className="sm:mx-auto sm:w-full sm:max-w-md text-center relative z-10">
                 <div className="flex justify-center mb-4">
-                    <div className="p-2">
-                        <img src="/logo.png" alt="CIT Logo" className="h-20 object-contain" />
+                    <div className="p-4 bg-white/10 backdrop-blur-md rounded-2xl shadow-lg border border-white/20">
+                        <img src="/logo.png" alt="CIT Logo" className="h-20 object-contain drop-shadow-md" />
                     </div>
                 </div>
-                <h2 className="text-3xl font-black text-primary tracking-tight mb-2">AssetFlow</h2>
-                <p className="mt-2 text-sm text-secondaryText">AI-Powered Institutional Asset Management</p>
+                <h2 className="text-4xl font-black text-white tracking-tight mb-2 drop-shadow-md">AssetFlow</h2>
+                <p className="mt-2 text-sm text-gray-200 font-medium drop-shadow-md">AI-Powered Institutional Asset Management</p>
             </div>
 
-            <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-                <div className="bg-white py-8 px-4 shadow-sm sm:rounded-xl sm:px-10 border border-borderContent">
+            <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md relative z-10">
+                <div className="bg-white/95 backdrop-blur-xl py-8 px-4 shadow-2xl sm:rounded-2xl sm:px-10 border border-white/40">
                     <form className="space-y-6" onSubmit={handleLogin}>
                         <div>
-                            <label className="block text-sm font-medium text-primaryText">Role</label>
+                            <label className="block text-sm font-bold text-gray-800">Role</label>
                             <div className="mt-1">
                                 <select
                                     value={role}
                                     onChange={(e) => setRole(e.target.value)}
-                                    className="appearance-none block w-full px-3 py-2 border border-borderContent rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-accent focus:border-accent sm:text-sm"
+                                    className="appearance-none block w-full px-4 py-3 border border-gray-200 rounded-xl shadow-sm text-gray-800 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all sm:text-sm font-medium"
                                 >
                                     <option value="chairman">chairman</option>
-                                    <option value="principle">principle</option>
+                                    <option value="principal">principal</option>
                                     <option value="asset_admin">asset_admin</option>
                                     <option value="faculty">faculty</option>
                                     <option value="HOD">HOD</option>

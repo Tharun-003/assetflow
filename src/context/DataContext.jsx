@@ -45,21 +45,27 @@ export function DataProvider({ children }) {
     }, []);
 
     const addAsset = (asset) => {
+        setAssets(prev => [...prev, asset]);
         socket.emit('action', { type: 'addAsset', payload: asset });
         addAuditLog('Create', 'Asset', `Added ${asset.name}`);
     };
 
     const addProcurement = (proc) => {
+        setProcurements(prev => [...prev, { ...proc, id: proc.id || `REQ-${Math.floor(Math.random() * 10000)}` }]);
         socket.emit('action', { type: 'addProcurement', payload: proc });
         addAuditLog('Create', 'Procurement', `Requested ${proc.item}`);
     };
 
     const addBulkProcurements = (procArray) => {
-        socket.emit('action', { type: 'addBulkProcurements', payload: procArray });
-        addAuditLog('Import', 'Procurement', `Smart imported ${procArray.length} requisitions`);
+        const enrichedProcs = procArray.map(proc => ({ ...proc, id: proc.id || `REQ-${Math.floor(Math.random() * 10000)}` }));
+        setProcurements(prev => [...prev, ...enrichedProcs]);
+        socket.emit('action', { type: 'addBulkProcurements', payload: enrichedProcs });
+        addAuditLog('Import', 'Procurement', `Smart imported ${enrichedProcs.length} requisitions`);
     };
 
     const addAuditLog = (action, module, details) => {
+        const log = { id: `LOG-${Math.floor(Math.random() * 10000)}`, action, module, details, date: new Date().toISOString() };
+        setAuditLogs(prev => [log, ...prev]);
         socket.emit('action', { type: 'addAuditLog', payload: { action, module, details } });
     };
 
@@ -68,6 +74,7 @@ export function DataProvider({ children }) {
     };
 
     const updateProcurementStatus = (id, status) => {
+        setProcurements(prev => prev.map(p => p.id === id ? { ...p, status } : p));
         socket.emit('action', { type: 'updateProcurementStatus', payload: { id, status } });
         addAuditLog('Edit', 'Procurement', `Updated status of ${id} to ${status}`);
     }
@@ -78,6 +85,7 @@ export function DataProvider({ children }) {
     };
 
     const addDefect = (defect) => {
+        setDefects(prev => [...prev, defect]);
         socket.emit('action', { type: 'addDefect', payload: defect });
         addAuditLog('Create', 'Defect Analysis', `New defect report generated: ${defect.id}`);
     };

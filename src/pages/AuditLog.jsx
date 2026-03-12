@@ -8,9 +8,9 @@ function AuditLog() {
     const [dateFilter, setDateFilter] = useState('');
 
     const filteredLogs = auditLogs.filter(log => {
-        const sMatch = log.user.toLowerCase().includes(search.toLowerCase()) ||
-            log.details.toLowerCase().includes(search.toLowerCase()) ||
-            log.module.toLowerCase().includes(search.toLowerCase());
+        const sMatch = log.user?.toLowerCase().includes(search.toLowerCase()) ||
+            log.details?.toLowerCase().includes(search.toLowerCase()) ||
+            log.module?.toLowerCase().includes(search.toLowerCase());
 
         const dMatch = dateFilter ? log.timestamp.startsWith(dateFilter) : true;
         return sMatch && dMatch;
